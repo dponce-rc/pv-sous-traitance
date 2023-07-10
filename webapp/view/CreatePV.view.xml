@@ -1,0 +1,430 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="PP.ZManage_PV.controller.CreatePV"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+	<App>
+		<pages>
+			<Page title="{i18n>TitreCreatePV}" showNavButton="true" navButtonPress="._onNavBack">
+				<!--<sap.ui.layout:Grid xmlns:sap.ui.layout="sap.ui.layout" id="grid0">-->
+				<!--	<sap.ui.layout:content>-->
+				<!--			<l:HorizontalLayout class="sapUiSmallMargin">-->
+				<!--		<Label text="subcontractor">-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L1 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Label>-->
+				<!--		<Input >-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L1 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Input>-->
+				<!--		<Label  text="Date creation form">-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L2 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Label>-->
+				<!--		<Input >-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L1 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Input>-->
+				<!--		<Label text="Author">-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L1 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Label>-->
+				<!--		<Input >-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L1 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Input>-->
+				<!--		<Label text="N Order/Purchase">-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L2 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Label>-->
+				<!--		<Input>-->
+				<!--			<layoutData>-->
+				<!--				<sap.ui.layout:GridData span="XL1 L1 M6 S6"/>-->
+				<!--			</layoutData>-->
+				<!--		</Input>-->
+				<!--		</l:HorizontalLayout>-->
+				<!--	</sap.ui.layout:content>-->
+				<!--</sap.ui.layout:Grid>-->
+				<f:SimpleForm id="customercell" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1">
+					<f:content>
+						<Label text="Subcontractor">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Date creation form">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Author">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="N order/Purchase">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Name of cup">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Select forceSelection="false" items="">
+							<core:Item key="" text=""/>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Select>
+						<!--<Input>-->
+						<!--	<layoutData>-->
+						<!--		<l:GridData span="L1 M2 S2"/>-->
+						<!--	</layoutData>-->
+						<!--</Input>-->
+						<Label text="Prestation Date">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<DatePicker id="DP8" change="handleChange" showFooter="true">
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</DatePicker>
+						<Label text="Product description">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L4 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="From number">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="PF or AC code">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="SF code">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Quantity cases">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Cols /Cases">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Select forceSelection="false" items="">
+							<core:Item key="" text=""/>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Select>
+						<Label text="Quantity Col or AC">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Statuts">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="EPS or NC Ref">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Purchase order type">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+						<Label text="Vol(cl)">
+							<layoutData>
+								<l:GridData span="L2 M2 S2"/>
+							</layoutData>
+						</Label>
+						<Input>
+							<layoutData>
+								<l:GridData span="L1 M2 S2"/>
+							</layoutData>
+						</Input>
+					</f:content>
+				</f:SimpleForm>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button text="{i18n>Save}" press=".onDisplayData"/>
+					<Button text="{i18n>Submit}" press=".onDisplayData"/>
+					<Button text="{i18n>Delete}" press=".onFilterData"/>
+					<Button text="{i18n>Back}" press=".onFilterData"/>
+					<ToolbarSpacer/>
+				</Toolbar>
+				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
+				<!--	<Label text="Product" labelFor="productInput"/>-->
+				<!--	<Input>-->
+				<!--		<layoutData>-->
+				<!--			<l:GridData span="L1 M2 S2"/>-->
+				<!--		</layoutData>-->
+				<!--	</Input>-->
+				<!--</l:VerticalLayout>-->
+				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
+				<!--	<Label text="Product" labelFor="productInput"/>-->
+				<!--	<Input>-->
+				<!--		<layoutData>-->
+				<!--			<l:GridData span="L1 M2 S2"/>-->
+				<!--		</layoutData>-->
+				<!--	</Input>-->
+				<!--</l:VerticalLayout>-->
+				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
+				<!--	<Label text="Product" labelFor="productInput"/>-->
+				<!--	<Input>-->
+				<!--		<layoutData>-->
+				<!--			<l:GridData span="L1 M2 S2"/>-->
+				<!--		</layoutData>-->
+				<!--	</Input>-->
+				<!--</l:VerticalLayout>-->
+				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
+				<!--	<Label text="Product" labelFor="productInput"/>-->
+				<!--	<Input>-->
+				<!--		<layoutData>-->
+				<!--			<l:GridData span="L1 M2 S2"/>-->
+				<!--		</layoutData>-->
+				<!--	</Input>-->
+				<!--</l:VerticalLayout>-->
+				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
+				<!--	<Label text="Product" labelFor="productInput"/>-->
+				<!--	<Input>-->
+				<!--		<layoutData>-->
+				<!--			<l:GridData span="L1 M2 S2"/>-->
+				<!--		</layoutData>-->
+				<!--	</Input>-->
+				<!--</l:VerticalLayout>-->
+				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
+				<!--	<Label text="Product" labelFor="productInput"/>-->
+				<!--	<Input>-->
+				<!--		<layoutData>-->
+				<!--			<l:GridData span="L1 M2 S2"/>-->
+				<!--		</layoutData>-->
+				<!--	</Input>-->
+				<!--</l:VerticalLayout>-->
+				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
+				<!--	<Label text="Product" labelFor="productInput"/>-->
+				<!--	<Input>-->
+				<!--		<layoutData>-->
+				<!--			<l:GridData span="L1 M2 S2"/>-->
+				<!--		</layoutData>-->
+				<!--	</Input>-->
+				<!--</l:VerticalLayout>-->
+				<VBox class="sapUiNoContentPadding">
+					<f:SimpleForm id="SimpleFormChange3541" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1"
+						singleContainerFullSize="false">
+						<f:content>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+						</f:content>
+					</f:SimpleForm>
+					<!--<f:SimpleForm id="SimpleFormChange3541" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1"-->
+					<!--	singleContainerFullSize="false">-->
+					<!--		<List id="PV_list" items="{oModelPVList>/results}" inset="true"-->
+					<!--	noDataText="Aucun PV créé"  mode="SingleSelectMaster" selectionChange="onSelectionChange">-->
+					<!--	<items>-->
+					<!--		<ObjectListItem type="Active" title="{oModelPVList>Qmnum}">-->
+					<!--			<attributes>-->
+									
+					<!--			</attributes>-->
+					<!--		</ObjectListItem>-->
+					<!--	</items>-->
+					<!--</List>-->
+					<!--</f:SimpleForm>-->
+				</VBox>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

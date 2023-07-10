@@ -1,0 +1,23 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="PP.ZManage_PV.controller.DisplayPV">
+	<App>
+		<pages >
+			<Page title="Afficher les PV existants" showNavButton="true" navButtonPress="._onNavBack">
+				<content>
+					<List id="PV_list" items="{oModelPVList>/results}" inset="true"
+						noDataText="Aucun PV créé"  mode="SingleSelectMaster" selectionChange="onSelectionChange">
+						<items>
+							<ObjectListItem type="Active" title="{oModelPVList>Qmnum}">
+								<attributes>
+									<!--<ObjectAttribute text="{oModelPVList>Ebeln}"/>-->
+									<ObjectAttribute text="{oModelPVList>Ebeln}"/>
+									<ObjectAttribute text="{oModelPVList>Ebelp}"/>
+									<ObjectAttribute text="{oModelPVList>Erdat}"/>
+								</attributes>
+							</ObjectListItem>
+						</items>
+					</List>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
