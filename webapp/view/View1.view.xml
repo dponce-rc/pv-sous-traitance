@@ -1,0 +1,35 @@
+<mvc:View controllerName="PP.ZManage_PV.controller.View1" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:sfb="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable">
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<smartFilterBar:SmartFilterBar id="smartFilterBarPV" persistencyKey="UniqueAndStablePersistencyKey" considerSelectionVariants="true"
+						entitySet="ZPV_POList" enableBasicSearch="false">
+						<smartFilterBar:controlConfiguration>
+							<smartFilterBar:ControlConfiguration key="lifnr" index="1" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+							<smartFilterBar:ControlConfiguration key="ebeln" index="2" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+							<smartFilterBar:ControlConfiguration key="pstyp" index="2" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+							<smartFilterBar:ControlConfiguration key="elikz" index="2" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+							<smartFilterBar:ControlConfiguration key="matnr" index="2" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+							<smartFilterBar:ControlConfiguration key="lpein" index="2" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>
+							<!--<smartFilterBar:ControlConfiguration key="lpein" index="2" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>-->
+						</smartFilterBar:controlConfiguration>
+					</smartFilterBar:SmartFilterBar>
+					<OverflowToolbar height='auto'>
+						<Toolbar>
+							<Button icon="sap-icon://create-form" text="Créer un PV" press=".onDispalyCreate"/>
+						</Toolbar>
+					</OverflowToolbar>
+					<smartTable:SmartTable id="smartTable_ResponsiveTable" tableType="Table" entitySet="ZPV_POList" beforeRebindTable="onBeforeRebindTable"
+						useVariantManagement="true" useTablePersonalisation="true" smartFilterId="smartFilterBarPV" header="Dimensions" showRowCount="true"
+						useExportToExcel="true" enableAutoBinding="true" initiallyVisibleFields="lifnr,ebeln,ebelp,matnr,txz01,menge,lpein,stockQnty,pv_number"
+						persistencyKey="SmartTablePKey" class="sapUiResponsiveContentPadding">
+						<Table id="tableGestionPv" growing="true" growingThreshold="100" growingScrollToLoad="true" mode="SingleSelectMaster"
+							selectionChange="handleSelectionChange"></Table>
+					</smartTable:SmartTable>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
