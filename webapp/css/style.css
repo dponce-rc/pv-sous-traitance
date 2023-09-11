@@ -1,1 +1,51 @@
 /* Enter your custom styles here */
+.HBoxStyle {
+    margin-top: 1rem;
+}
+    
+.leftVBoxStyle {
+    margin-left: 10rem;
+
+}
+    
+.rightVBoxStyle {
+    margin-right: 1rem;
+}
+
+.rightVBoxStyleL{
+	margin-right: 3rem;
+}
+
+.VBoxStyleTop{
+	margin-top: 1.25rem;
+}
+
+.VBoxStyle1{
+	margin-top: 10rem;
+}
+
+.buttonStyle {
+    margin-right: 2rem;
+    width: 150px;
+}
+    
+.lastButtonStyle {
+    margin-right: 10rem;
+    width: 150px;
+	
+}
+.CenterTitleStyle{
+	margin-left: 20rem;
+}
+
+.DynamicFieldStyle{
+	margin-left: 30rem;
+}
+
+.stickyToolbar {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 101;
+}
+

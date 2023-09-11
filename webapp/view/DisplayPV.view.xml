@@ -8,10 +8,18 @@
 						<items>
 							<ObjectListItem type="Active" title="{oModelPVList>Qmnum}">
 								<attributes>
+									<ObjectAttribute text="{oModelPVList>SystemStatus}"/>
 									<!--<ObjectAttribute text="{oModelPVList>Ebeln}"/>-->
 									<ObjectAttribute text="{oModelPVList>Ebeln}"/>
 									<ObjectAttribute text="{oModelPVList>Ebelp}"/>
-									<ObjectAttribute text="{oModelPVList>Erdat}"/>
+									<!--<ObjectAttribute text="{oModelPVList>Erdat}" />-->
+									<ObjectAttribute text="{ path: 'oModelPVList>Erdat', 
+															 type: 'sap.ui.model.type.DateTime', 
+															 formatOptions: { 
+																pattern: 'EEEE dd.MM.yyyy',
+																source:  { pattern: 'dd.MM.yyyy' }
+															}
+														}"/>
 								</attributes>
 							</ObjectListItem>
 						</items>

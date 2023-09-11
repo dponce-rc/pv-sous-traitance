@@ -1,5 +1,5 @@
 {
-	"_version": "1.6.5",
+	"_version": "1.12.0",
 	"sap.app": {
 		"id": "PP.ZManage_PV",
 		"type": "application",
@@ -157,5 +157,9 @@
 				}
 			}
 		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zmanage_pv/webapp",
+		"_version": "1.1.0"
 	}
 }

@@ -1,5 +1,10 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="PP.ZManage_PV.controller.CreatePV"
-	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form">
+<mvc:View xmlns:core="sap.ui.core" 
+          xmlns:mvc="sap.ui.core.mvc" 
+          xmlns="sap.m" 
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:l="sap.ui.layout"
+          xmlns:f="sap.ui.layout.form"
+          controllerName="PP.ZManage_PV.controller.CreatePV">
 	<App>
 		<pages>
 			<Page title="{i18n>TitreCreatePV}" showNavButton="true" navButtonPress="._onNavBack">
@@ -232,7 +237,7 @@
 				</f:SimpleForm>
 				<Toolbar>
 					<ToolbarSpacer/>
-					<Button text="{i18n>Save}" press=".onDisplayData"/>
+					<Button text="{i18n>Save}" press="._onSaveData"/>
 					<Button text="{i18n>Submit}" press=".onDisplayData"/>
 					<Button text="{i18n>Delete}" press=".onFilterData"/>
 					<Button text="{i18n>Back}" press=".onFilterData"/>
@@ -298,6 +303,170 @@
 					<f:SimpleForm id="SimpleFormChange3541" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1"
 						singleContainerFullSize="false">
 						<f:content>
+							<VBox>
+							<Panel class="sapUiResponsiveMargin" width="auto">
+							<VBox class="rightVBoxStyle" >
+								<HBox>
+									<VBox class="rightVBoxStyleL">
+										<Label text="Qty COL or AC supply"/>
+										<Label text="by RC"/>
+									</VBox>
+									
+									<VBox class="rightVBoxStyleL">
+									<Label text="Qty COL or AC used"/>
+									</VBox>
+									
+									<VBox class="rightVBoxStyleL">
+									<Label text="Qty COL/AC numbers on"/>
+									<Label text="delivery"/>										
+									</VBox>
+									<VBox class="rightVBoxStyleL"><Label text="Qty COL/AC scrap"/></VBox>
+									<VBox class="rightVBoxStyleL"><Label text="Qty COL/AC waste"/></VBox>									
+								</HBox>
+								<HBox>
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="Total Batchs"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVModel>/Qty1}" />											
+									</VBox>
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="Total Batchs"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVModel>/Qty2}"/>											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="Total Batchs"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVModel>/Qty3}"/>											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="Total Batchs"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVModel>/Qty4}"/>											
+									</VBox>
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="Total Batchs"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVModel>/Qty5}"/>											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="Total % Scrap"  />
+									</FlexBox>
+									<Input width="7rem" value="{CreatePVModel>/TotalScrap}"/>											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="Total % Waste"  />
+									</FlexBox>
+									<Input width="7rem" value="{CreatePVModel>/TotalWaste}"/>											
+									</VBox>										
+								</HBox>
+								<HBox class = "HBoxStyle">
+									<VBox class="rightVBoxStyle">
+									<Label text="Total Waste SF/PF"  />
+									<Input width = "10rem" value="{CreatePVModel>/TotalWasteSFPF}" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<Label text="Total Scrap SF/PF"  />
+									<Input width = "10rem" value="{CreatePVModel>/TotalScrapSFPF}" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<Label text="Total Scrap AC"  />
+									<Input width = "10rem" value="{CreatePVModel>/TotalScrapAC}" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<Label text="Total Waste AC"  />
+									<Input width = "10rem" value="{CreatePVModel>/TotalWasteAC}" />											
+									</VBox>										
+								</HBox>
+
+								<HBox class = "HBoxStyle">
+									<HBox class = "VBoxStyleTop">
+									<CheckBox selected="{CreatePVModel>/BatchFlag}" text="BATCH" />
+									<Input width="7rem" value="{CreatePVModel>/BatchValue}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd" />
+									</HBox>
+
+									<VBox class="rightVBoxStyle">
+									<Label text="Qty COL or AC Supply"  />
+									<Input width = "10rem" value="{CreatePVModel>/COLACSupplyQty}" />											
+									</VBox>	
+
+									<VBox class="rightVBoxStyle">
+									<Label text="Qty COL or AC Used"  />
+									<Input width = "10rem" value="{CreatePVModel>/COLACUsedQty}" />											
+									</VBox>		
+									
+									<VBox class="rightVBoxStyle">
+									<Label text="Qty COL/AC numbers on"  />
+									<Input width = "10rem" value="{CreatePVModel>/COLACnumber}" />											
+									</VBox>
+									
+									<VBox class="rightVBoxStyle">
+									<Label text="Qty COL/AC scrap"  />
+									<Input width = "10rem" value="{CreatePVModel>/COLACscrap}" />											
+									</VBox>
+
+									<VBox class="rightVBoxStyle">
+									<Label text="Qty COL/AC waste"  />
+									<Input width = "10rem" value="{CreatePVModel>/COLACwaste}" />											
+									</VBox>										
+								</HBox>
+							</VBox>
+							</Panel>
+						
+							<Panel expandable="true" headerText="Waste SF/PF" width="auto" class="sapUiResponsiveMargin">
+								<content>
+									<l:Grid defaultSpan="L12 M12 S12" hSpacing="2" width="auto">
+									<Label text= "Quantity" class="CenterTitleStyle"/>
+									<HBox>
+										<f:Form id="Formdisplay354" maxContainerCols="2">
+					                        <f:layout>
+					                        <f:ResponsiveGridLayout   />
+					                        </f:layout>	
+					                        <f:formContainers>
+					                        	<f:FormContainer>
+					                        		<f:FormElement id="FieldInputElement" >
+					                        			<f:fields>
+					                        				<HBox> <Button text="+ Waste SF/PF" id="add_butt_sfpsf" press="._onAddSFPF" class="sapUiTinyMarginTop"/>
+					                        					   <HBox class="sapUiLargeMarginBeginEnd" >
+					                        				       <Label text="F-SF-01" class="sapUiTinyMarginTop sapUiMediumMarginBeginEnd"/>  
+					                        				       <Input value="{ }" class="sapUiTinyMarginTopBottom sapUiMediumMarginEnd"/> 
+					                        				       <Label text="%Waste" class="sapUiTinyMarginTop sapUiLargeMarginBegin"/> 
+					                        				       <Input value="{ }" class="sapUiTinyMarginTopBottom sapUiMediumMarginBegin"/> 
+					                        				       </HBox>
+					                        				</HBox>
+					                        			</f:fields>
+					                        		</f:FormElement>
+					                        	</f:FormContainer>
+					                        </f:formContainers>
+										</f:Form>
+									</HBox>	
+									</l:Grid>
+								</content>
+
+						    </Panel>
+						    
+						    <Panel expandable="true" headerText="Scrap SF/PF" width="auto" class="sapUiResponsiveMargin">
+						    	
+						    </Panel>
+						    </VBox>
+
+							<!-- <Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
 							<Label text="Total">
 								<layoutData>
 									<l:GridData span="L2 M2 S2"/>
@@ -305,6 +474,26 @@
 							</Label>
 							<Input>
 								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData>
+									<l:GridData span="L1 M2 S2"/>
+								</layoutData>
+							</Input>
+							<Label text="Total">
+								<layoutData>
+									<l:GridData span="L2 M2 S2"/>
+								</layoutData>
+							</Label>
+							<Input>
+								<layoutData> 
 									<l:GridData span="L1 M2 S2"/>
 								</layoutData>
 							</Input>
@@ -357,57 +546,7 @@
 								<layoutData>
 									<l:GridData span="L1 M2 S2"/>
 								</layoutData>
-							</Input>
-							<Label text="Total">
-								<layoutData>
-									<l:GridData span="L2 M2 S2"/>
-								</layoutData>
-							</Label>
-							<Input>
-								<layoutData>
-									<l:GridData span="L1 M2 S2"/>
-								</layoutData>
-							</Input>
-							<Label text="Total">
-								<layoutData>
-									<l:GridData span="L2 M2 S2"/>
-								</layoutData>
-							</Label>
-							<Input>
-								<layoutData>
-									<l:GridData span="L1 M2 S2"/>
-								</layoutData>
-							</Input>
-							<Label text="Total">
-								<layoutData>
-									<l:GridData span="L2 M2 S2"/>
-								</layoutData>
-							</Label>
-							<Input>
-								<layoutData>
-									<l:GridData span="L1 M2 S2"/>
-								</layoutData>
-							</Input>
-							<Label text="Total">
-								<layoutData>
-									<l:GridData span="L2 M2 S2"/>
-								</layoutData>
-							</Label>
-							<Input>
-								<layoutData>
-									<l:GridData span="L1 M2 S2"/>
-								</layoutData>
-							</Input>
-							<Label text="Total">
-								<layoutData>
-									<l:GridData span="L2 M2 S2"/>
-								</layoutData>
-							</Label>
-							<Input>
-								<layoutData>
-									<l:GridData span="L1 M2 S2"/>
-								</layoutData>
-							</Input>
+							</Input> -->
 						</f:content>
 					</f:SimpleForm>
 					<!--<f:SimpleForm id="SimpleFormChange3541" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1"-->
