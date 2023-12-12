@@ -7,6 +7,11 @@
     margin-left: 10rem;
 
 }
+
+.leftVBoxStyleSmall {
+    margin-left: 3rem;
+
+}
     
 .rightVBoxStyle {
     margin-right: 1rem;
@@ -35,11 +40,22 @@
 	
 }
 .CenterTitleStyle{
-	margin-left: 20rem;
+	margin-left: 30rem;
 }
 
 .DynamicFieldStyle{
-	margin-left: 30rem;
+	margin-left: 100rem;
+}
+.ButtonTopMarin{
+	margin-top: 2rem;
+}
+
+.SmallMarginLeft{
+	margin-left: 1rem;
+}
+
+.hidebutton{
+	visibility:hidden;
 }
 
 .stickyToolbar {

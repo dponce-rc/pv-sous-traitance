@@ -69,7 +69,15 @@ sap.ui.define([
 			// Get the router instance
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			// Navigate to the target page passing any necessary parameters
-			oRouter.navTo("Update", {}, true);
+			
+			//oRouter.navTo("Update", {}, true);
+			
+			var lv_qmnum = selectedItem.getTitle();
+			oRouter.navTo("Update", {
+					Qmnum : lv_qmnum 
+				}, true
+			);			
+			
 		}, 
 		test: function() {
 			

@@ -119,7 +119,7 @@
 				},
 				{
 					"name": "Update",
-					"pattern": "Update",
+					"pattern": "Update/{Qmnum}",
 					"targetAggregation": "Pages",
 					"greedy": false,
 					"target": [
@@ -128,7 +128,7 @@
 				},
 				{
 					"name": "CreatePV",
-					"pattern": "CreatePV",
+					"pattern": "CreatePV/{Ebeln}/{Ebelp}/{Txz01}",
 					"targetAggregation": "Pages",
 					"greedy": false,
 					"target": [
@@ -154,6 +154,10 @@
 				"CreatePV": {
 					"viewType": "XML",
 					"viewName": "CreatePV"
+				},
+				"BatchSh": {
+					"viewType": "XML",
+					"viewName": "BatchSh"
 				}
 			}
 		}

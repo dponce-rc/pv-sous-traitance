@@ -7,7 +7,7 @@
           controllerName="PP.ZManage_PV.controller.CreatePV">
 	<App>
 		<pages>
-			<Page title="{i18n>TitreCreatePV}" showNavButton="true" navButtonPress="._onNavBack">
+			<Page title="{i18n>TitreCreatePV}" showNavButton="true" navButtonPress="._onNavBack" width="auto">
 				<!--<sap.ui.layout:Grid xmlns:sap.ui.layout="sap.ui.layout" id="grid0">-->
 				<!--	<sap.ui.layout:content>-->
 				<!--			<l:HorizontalLayout class="sapUiSmallMargin">-->
@@ -54,193 +54,302 @@
 				<!--		</l:HorizontalLayout>-->
 				<!--	</sap.ui.layout:content>-->
 				<!--</sap.ui.layout:Grid>-->
-				<f:SimpleForm id="customercell" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1">
+				<f:SimpleForm id="customercell" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1" width="auto">
 					<f:content>
-						<Label text="Subcontractor">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Date creation form">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Author">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="N order/Purchase">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Name of cup">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Select forceSelection="false" items="">
-							<core:Item key="" text=""/>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Select>
-						<!--<Input>-->
-						<!--	<layoutData>-->
-						<!--		<l:GridData span="L1 M2 S2"/>-->
-						<!--	</layoutData>-->
-						<!--</Input>-->
-						<Label text="Prestation Date">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<DatePicker id="DP8" change="handleChange" showFooter="true">
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</DatePicker>
-						<Label text="Product description">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L4 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="From number">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="PF or AC code">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="SF code">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Quantity cases">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Cols /Cases">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Select forceSelection="false" items="">
-							<core:Item key="" text=""/>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Select>
-						<Label text="Quantity Col or AC">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Statuts">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="EPS or NC Ref">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Purchase order type">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
-						<Label text="Vol(cl)">
-							<layoutData>
-								<l:GridData span="L2 M2 S2"/>
-							</layoutData>
-						</Label>
-						<Input>
-							<layoutData>
-								<l:GridData span="L1 M2 S2"/>
-							</layoutData>
-						</Input>
+						<VBox>
+							<HBox>
+								<VBox class="rightVBoxStyle leftVBoxStyleSmall">
+									<!--<Label text="Subcontractor">-->
+									<Label text="{i18n>hdr_Subcontractor}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/lifnum}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_DateCreationFrom}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<!--<Input>-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Input>-->
+									
+									<DatePicker id="DateCreationFrom" 
+									  dateValue="{ path: 'CreatePVModel>/erdat', formatter:'.formatter.fnDateTimeFormatter'}"
+									  displayFormat="long"
+									  change="handleDateChange" />	
+									  
+									<!--<DatePicker id="DateCreationFrom" change="handleDatePickerChange" showFooter="true" -->
+									<!--			dateValue="{-->
+									<!--				'path': 'CreatePVModel>/erdat',-->
+									<!--				'type': 'sap.ui.model.type.Date',-->
+									<!--				'formatOptions': {-->
+									<!--				'pattern': 'yyyy/MM/dd'-->
+									<!--				}-->
+									<!--			}"/>-->
+									
+									<!--<DatePicker id="DateCreationFrom" -->
+									<!--	        value="{ path: 'CreatePVModel>/erdat',-->
+									<!--					 type: 'sap.ui.model.type.Date',-->
+									<!--					 formatOptions:{ pattern : 'dd/MM/yyyy' }-->
+									<!--				   }"-->
+									<!--		   valueLiveUpdate="true"-->
+									<!--		   valueFormat="dd/MM/yyyy" -->
+									<!--		   change="handleDateChange">-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</DatePicker>									-->
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_Author}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/deviceid}">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PurchaseOrderNo}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/ebeln}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_NameOfCup}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									
+									<Input value="{CreatePVModel>/numcup_desc}" id="NameOfCup" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>
+									<!--<Select forceSelection="false" items="">-->
+									<!--	<core:Item key="" text=""/>-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Select>		-->
+									<!--<Input>-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Input>-->
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PresentationDate}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<DatePicker id="PresentationDate" 
+									  dateValue="{ path: 'CreatePVModel>/erdat2', formatter:'.formatter.fnDateTimeFormatter'}"
+									  displayFormat="long"
+									  change="handleDateChange" />
+									  
+									<!--<DatePicker id="DP8" change="handleChange" showFooter="true">-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</DatePicker>									-->
+								</VBox>
+							</HBox>
+							
+							<HBox>
+								<VBox class="rightVBoxStyle leftVBoxStyleSmall" >
+									<Label text="{i18n>hdr_ProductDesc}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input id="ProductDescription" width="26rem" value="{CreatePVModel>/txz01}" editable="false">
+										<!--<layoutData>-->
+										<!--	<l:GridData span="L4 M2 S2"/>-->
+										<!--</layoutData>-->
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_Cols_ou_AC}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<!--<Input id="UnitofMeasure" value="{CreatePVModel>/mgein}" editable="false">-->
+										<!--<layoutData>-->
+										<!--	<l:GridData span="L1 M2 S2"/>-->
+										<!--</layoutData>-->
+									<!--</Input>-->
+									<Input editable="false"
+											value="{ path: 'CreatePVModel>/mgein',
+													 formatter: '.formatter.fnFloatToDecimalFormatter'
+											}" />									
+								</VBox>
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PF_or_AC}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/matnr}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								<VBox class="rightVBoxStyle">
+									<Label text="SF code">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/sfcode}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								<VBox class="rightVBoxStyle" >
+									<Label text="{i18n>hdr_Qty_cases}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+
+									<Input editable="false"
+										   value="{ path: 'CreatePVModel>/qty_cas',
+													formatter: '.formatter.fnFloatToDecimalFormatter' }" />
+													
+									<!--<Input value="{CreatePVModel>/meins}" editable="false">-->
+										<layoutData>
+											<l:GridData span="L1 M2 S2" />
+										</layoutData>
+									<!--</Input>									-->
+								</VBox>
+							</HBox>
+							
+							<HBox>
+								<!--<VBox class="rightVBoxStyle leftVBoxStyleSmall">-->
+								<!--	<Label text="Cols /Cases">-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L2 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Label>-->
+									
+								<!--	<Input editable="false">-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L1 M2 S2" />-->
+								<!--		</layoutData>-->
+								<!--	</Input>									-->
+									<!--<Select forceSelection="false" items="">-->
+									<!--	<core:Item key="" text=""/>-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Select>									-->
+								<!--</VBox>-->
+								
+								<!--<VBox class="rightVBoxStyle" >-->
+								<!--	<Label text="Quantity Col or AC">-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L2 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Label>-->
+								<!--	<Input>-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L1 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Input>									-->
+								<!--</VBox>-->
+								
+								<!--<VBox class="rightVBoxStyle" >-->
+								<!--	<Label text="Statuts">-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L2 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Label>-->
+								<!--	<Input value="{CreatePVModel>/status}" editable="false" >-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L1 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Input>									-->
+								<!--</VBox>-->
+								
+								<VBox class="rightVBoxStyle leftVBoxStyleSmall">
+									<Label text="{i18n>hdr_EPSorNCRef}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/refnum}" >
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PurchaseOrderType}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/bsart}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="Vol(cl)">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/zzvolu}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+							</HBox>
+						</VBox>
 					</f:content>
 				</f:SimpleForm>
 				<Toolbar>
 					<ToolbarSpacer/>
-					<Button text="{i18n>Save}" press="._onSaveData"/>
-					<Button text="{i18n>Submit}" press=".onDisplayData"/>
-					<Button text="{i18n>Delete}" press=".onFilterData"/>
-					<Button text="{i18n>Back}" press=".onFilterData"/>
+					<Button icon="sap-icon://save" type="Accept" text="{i18n>butt_save}" press="._onSaveData" width="15rem"/>
+					<!--<Button text="{i18n>Submit}" press=".onDisplayData"/>-->
+					<!--<Button text="{i18n>Delete}" press=".onFilterData"/>-->
+					<!--<Button text="{i18n>Back}" press=".onFilterData"/>-->
 					<ToolbarSpacer/>
 				</Toolbar>
 				<!--<l:VerticalLayout class="sapUiContentPadding" width="10%">-->
@@ -301,160 +410,307 @@
 				<!--</l:VerticalLayout>-->
 				<VBox class="sapUiNoContentPadding">
 					<f:SimpleForm id="SimpleFormChange3541" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1"
-						singleContainerFullSize="false">
+						singleContainerFullSize="false" width="auto">
 						<f:content>
 							<VBox>
 							<Panel class="sapUiResponsiveMargin" width="auto">
 							<VBox class="rightVBoxStyle" >
 								<HBox>
 									<VBox class="rightVBoxStyleL">
-										<Label text="Qty COL or AC supply"/>
-										<Label text="by RC"/>
+										<Label text="{i18n>Qty_COLorACSupply}"/>
+										<!--<Label text="by RC"/>-->
 									</VBox>
 									
 									<VBox class="rightVBoxStyleL">
-									<Label text="Qty COL or AC used"/>
+									<Label text="{i18n>Qty_COLorACUsed}"/>
 									</VBox>
 									
 									<VBox class="rightVBoxStyleL">
-									<Label text="Qty COL/AC numbers on"/>
-									<Label text="delivery"/>										
+									<Label text="{i18n>Qty_COLACNumDel}"/>
+									<Label text="{i18n>Qty_COLACNumDelv}"/>										
 									</VBox>
-									<VBox class="rightVBoxStyleL"><Label text="Qty COL/AC scrap"/></VBox>
-									<VBox class="rightVBoxStyleL"><Label text="Qty COL/AC waste"/></VBox>									
+									<VBox class="rightVBoxStyleL"><Label text="{i18n>Qty_COLACScrap}"/></VBox>
+									<VBox class="rightVBoxStyleL"><Label text="{i18n>Qty_COLACWaste}"/></VBox>									
 								</HBox>
 								<HBox>
 									<VBox class="rightVBoxStyle">
 									<FlexBox justifyContent="Center">	
-									<Label text="Total Batchs"  />
+									<Label text="{i18n>Total_Batchs}" />
 									</FlexBox>
-									<Input width="10rem" value="{CreatePVModel>/Qty1}" />											
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACSupply}" editable="false" type="Number" />											
 									</VBox>
 									<VBox class="rightVBoxStyle">
 									<FlexBox justifyContent="Center">	
-									<Label text="Total Batchs"  />
+									<Label text="{i18n>Total_Batchs}"  />
 									</FlexBox>
-									<Input width="10rem" value="{CreatePVModel>/Qty2}"/>											
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACUsed}" editable="false" type="Number" />											
 									</VBox>	
 									<VBox class="rightVBoxStyle">
 									<FlexBox justifyContent="Center">	
-									<Label text="Total Batchs"  />
+									<Label text="{i18n>Total_Batchs}"  />
 									</FlexBox>
-									<Input width="10rem" value="{CreatePVModel>/Qty3}"/>											
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACNum}" editable="false" type="Number" />											
 									</VBox>	
 									<VBox class="rightVBoxStyle">
 									<FlexBox justifyContent="Center">	
-									<Label text="Total Batchs"  />
+									<Label text="{i18n>Total_Batchs}"  />
 									</FlexBox>
-									<Input width="10rem" value="{CreatePVModel>/Qty4}"/>											
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACScrap}" editable="false" type="Number" />											
 									</VBox>
 									<VBox class="rightVBoxStyle">
 									<FlexBox justifyContent="Center">	
-									<Label text="Total Batchs"  />
+									<Label text="{i18n>Total_Batchs}"  />
 									</FlexBox>
-									<Input width="10rem" value="{CreatePVModel>/Qty5}"/>											
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACWaste}" editable="false" type="Number" />											
 									</VBox>	
 									<VBox class="rightVBoxStyle">
 									<FlexBox justifyContent="Center">	
-									<Label text="Total % Scrap"  />
+									<Label text="{i18n>Total_Perc_Scrap}"  />
 									</FlexBox>
-									<Input width="7rem" value="{CreatePVModel>/TotalScrap}"/>											
+									<Input width="7rem" value="{CreatePVTotalQtyModel>/TotalPercentScrap}" editable="false" type="Number" />											
 									</VBox>	
 									<VBox class="rightVBoxStyle">
 									<FlexBox justifyContent="Center">	
-									<Label text="Total % Waste"  />
+									<Label text="{i18n>Total_Perc_Waste}"  />
 									</FlexBox>
-									<Input width="7rem" value="{CreatePVModel>/TotalWaste}"/>											
+									<Input width="7rem" value="{CreatePVTotalQtyModel>/TotalPercentWaste}" editable="false" type="Number" />											
 									</VBox>										
 								</HBox>
 								<HBox class = "HBoxStyle">
 									<VBox class="rightVBoxStyle">
-									<Label text="Total Waste SF/PF"  />
-									<Input width = "10rem" value="{CreatePVModel>/TotalWasteSFPF}" />											
+									<Label text="{i18n>Total_Waste_SFPF}"   />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalWasteSFPF}" editable="false" type="Number" />											
 									</VBox>	
 									<VBox class="rightVBoxStyle">
-									<Label text="Total Scrap SF/PF"  />
-									<Input width = "10rem" value="{CreatePVModel>/TotalScrapSFPF}" />											
+									<Label text="{i18n>Total_Scrap_SFPF}" />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalScrapSFPF}" editable="false" type="Number" />											
 									</VBox>	
 									<VBox class="rightVBoxStyle">
-									<Label text="Total Scrap AC"  />
-									<Input width = "10rem" value="{CreatePVModel>/TotalScrapAC}" />											
+									<Label text="{i18n>Total_Scrap_AC}"  />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalScrapAC}" editable="false" type="Number" />											
 									</VBox>	
 									<VBox class="rightVBoxStyle">
-									<Label text="Total Waste AC"  />
-									<Input width = "10rem" value="{CreatePVModel>/TotalWasteAC}" />											
+									<Label text="{i18n>Total_Waste_AC}"  />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalWasteAC}" editable="false" type="Number" />											
 									</VBox>										
 								</HBox>
 
-								<HBox class = "HBoxStyle">
-									<HBox class = "VBoxStyleTop">
-									<CheckBox selected="{CreatePVModel>/BatchFlag}" text="BATCH" />
-									<Input width="7rem" value="{CreatePVModel>/BatchValue}" class="sapUiSmallMarginBegin sapUiSmallMarginEnd" />
-									</HBox>
-
-									<VBox class="rightVBoxStyle">
-									<Label text="Qty COL or AC Supply"  />
-									<Input width = "10rem" value="{CreatePVModel>/COLACSupplyQty}" />											
-									</VBox>	
-
-									<VBox class="rightVBoxStyle">
-									<Label text="Qty COL or AC Used"  />
-									<Input width = "10rem" value="{CreatePVModel>/COLACUsedQty}" />											
-									</VBox>		
-									
-									<VBox class="rightVBoxStyle">
-									<Label text="Qty COL/AC numbers on"  />
-									<Input width = "10rem" value="{CreatePVModel>/COLACnumber}" />											
-									</VBox>
-									
-									<VBox class="rightVBoxStyle">
-									<Label text="Qty COL/AC scrap"  />
-									<Input width = "10rem" value="{CreatePVModel>/COLACscrap}" />											
-									</VBox>
-
-									<VBox class="rightVBoxStyle">
-									<Label text="Qty COL/AC waste"  />
-									<Input width = "10rem" value="{CreatePVModel>/COLACwaste}" />											
-									</VBox>										
-								</HBox>
 							</VBox>
 							</Panel>
-						
-							<Panel expandable="true" headerText="Waste SF/PF" width="auto" class="sapUiResponsiveMargin">
-								<content>
-									<l:Grid defaultSpan="L12 M12 S12" hSpacing="2" width="auto">
-									<Label text= "Quantity" class="CenterTitleStyle"/>
-									<HBox>
-										<f:Form id="Formdisplay354" maxContainerCols="2">
-					                        <f:layout>
-					                        <f:ResponsiveGridLayout   />
-					                        </f:layout>	
-					                        <f:formContainers>
-					                        	<f:FormContainer>
-					                        		<f:FormElement id="FieldInputElement" >
-					                        			<f:fields>
-					                        				<HBox> <Button text="+ Waste SF/PF" id="add_butt_sfpsf" press="._onAddSFPF" class="sapUiTinyMarginTop"/>
-					                        					   <HBox class="sapUiLargeMarginBeginEnd" >
-					                        				       <Label text="F-SF-01" class="sapUiTinyMarginTop sapUiMediumMarginBeginEnd"/>  
-					                        				       <Input value="{ }" class="sapUiTinyMarginTopBottom sapUiMediumMarginEnd"/> 
-					                        				       <Label text="%Waste" class="sapUiTinyMarginTop sapUiLargeMarginBegin"/> 
-					                        				       <Input value="{ }" class="sapUiTinyMarginTopBottom sapUiMediumMarginBegin"/> 
-					                        				       </HBox>
-					                        				</HBox>
-					                        			</f:fields>
-					                        		</f:FormElement>
-					                        	</f:FormContainer>
-					                        </f:formContainers>
-										</f:Form>
-									</HBox>	
-									</l:Grid>
-								</content>
+							
+							<VBox id="BatchPanel">
+								<Panel width="auto" class="sapUiResponsiveMargin" expandable="true" expanded="true">
+									<content>
+										<HBox class = "HBoxStyle">
+											<!--<HBox class = "VBoxStyleTop">-->
+											<!--<CheckBox selected="{CreatePVModel>/BatchFlag}" text="BATCH" />-->
+											<!--<VBox class="rightVBoxStyleL">-->
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Batch}" />
+											<Input width="7rem"  showValueHelp="true" valueHelpRequest=".onValueHelpBatch" required="true"
+											       id="BatchID"/>
+											</VBox>
+											<!--</HBox>-->
+	
+											<VBox class="rightVBoxStyle sapUiMediumMarginEnd">
+											<Label text="{i18n>Batch_Description}" />
+											<Input width="10rem"
+											       id="BatchIDDesc" editable="false"/>
+											</VBox>
+											
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLorACSupply}"  />
+											<Input id="QtyCOLACSupply" width = "8rem" liveChange=".onLiveChangeBatch" />											
+											</VBox>	
+		
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLorACUsed}" />
+											<Input id="QtyCOLACUsed" width = "8rem"  liveChange=".onLiveChangeBatch"/>											
+											</VBox>		
+											
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLACNumD}"  />
+											<Input id="QtyCOLACNum" width = "8rem"  liveChange=".onLiveChangeBatch" />											
+											</VBox>
+											
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLACScrap}" />
+											<Input width = "8rem"  editable="false" id="TotalQtyScrap" type="Number" />											
+											</VBox>
+		
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLACWaste}" />
+											<Input width = "8rem"  editable="false" id="TotalQtyWaste" type="Number" />											
+											</VBox>										
+										</HBox>		
+										
+										<l:Grid defaultSpan="L12 M12 S12" hSpacing="2" width="auto">
 
-						    </Panel>
+										<HBox>
+											<f:Form id="Formdisplay354" maxContainerCols="2">
+						                        <f:layout>
+						                        <f:ResponsiveGridLayout   />
+						                        </f:layout>	
+						                        <f:formContainers>
+						                        	<f:FormContainer>
+						                        		<f:FormElement id="FieldInputElementWaste" >
+						                        			<f:fields>
+						                        				<VBox>
+								                        			<HBox id="Z0000001_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000001" press="._onAddWaste" class="ButtonTopMarin"/>
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc1" width="8rem" editable="false" value="Scrap SF / PF"/> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}" /> 
+								                        				       <Input width="5rem" id="Z0000001_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" /> 						                        					   			
+						                        					   		</VBox>		
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}" /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000001_DefectIDDesc"/> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}" /> 
+								                        				       <Input width="5rem" id="Z0000001_Qty" liveChange=".onLiveChange" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000001_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>		
+
+								                        			<HBox id="Z0000002_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000002" press="._onAddWaste" class="ButtonTopMarin"/>
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc2" width="8rem" editable="false" value="Waste SF / PF" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}"/> 
+								                        				       <Input width="5rem" id="Z0000002_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" /> 						                        					   			
+						                        					   		</VBox>	
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}" /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000002_DefectIDDesc" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}"  /> 
+								                        				       <Input  width="5rem" id="Z0000002_Qty" liveChange=".onLiveChange" type="Number"  /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000002_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>				
+
+								                        			<HBox id="Z0000003_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000003" press="._onAddWaste" class="ButtonTopMarin"/>
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc3" width="8rem" editable="false" value="Scrap AC" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}" /> 
+								                        				       <Input width="5rem" id="Z0000003_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" /> 						                        					   			
+						                        					   		</VBox>	
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}" /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000003_DefectIDDesc" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}" /> 
+								                        				       <Input width="5rem" id="Z0000003_Qty"  liveChange=".onLiveChange" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000003_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>	
+								                        			
+								                        			<HBox id="Z0000004_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000004" press="._onAddWaste" class="ButtonTopMarin"/>
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc4" width="8rem" editable="false" value="Waste AC" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}"  /> 
+								                        				       <Input width="5rem" id="Z0000004_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" /> 						                        					   			
+						                        					   		</VBox>	
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}" /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000004_DefectIDDesc" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}"  /> 
+								                        				       <Input width="5rem" id="Z0000004_Qty" liveChange=".onLiveChange" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000004_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>								                        			
+						                        				</VBox>
+					                        			   	
+						                        			</f:fields>
+						                        		</f:FormElement>
+						                        	</f:FormContainer>
+						                        </f:formContainers>
+											</f:Form>
+										</HBox>	
+										</l:Grid>
+
+										<Button text="Delete Batch" type="Reject" class="CenterTitleStyle"  press="_onDeleteBatch" id="butt_DelBatch_0" enabled="false" />	
+									</content>
+	
+							    </Panel>
+
+						    </VBox>
 						    
-						    <Panel expandable="true" headerText="Scrap SF/PF" width="auto" class="sapUiResponsiveMargin">
-						    	
-						    </Panel>
+						    <Button icon="sap-icon://add" type="Accept" text="{i18n>butt_New_Batch}" press="_onAddBatch" class="sapUiResponsiveMargin"/>
+	
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true" expanded="true" headerText="Comments">
+								
+								<TextArea id="textAreaWithBinding2" value="{CreatePVModel>/hdr_txt}" 
+									showExceededText="true" 
+									maxLength="100" width="100%" 
+									valueState="{= ${/value}.length > 40 ? 'Warning' : 'None' }" 
+									valueLiveUpdate="false" liveChange="handleLiveChange" />							
+							</Panel>
+							
+							<UploadCollection maximumFilenameLength="55" maximumFileSize="1000" fileDeleted="onFileDeleted" class="sapUiResponsiveMargin"
+								filenameLengthExceed="onFilenameLengthExceed" fileRenamed="onFileRenamed" fileSizeExceed="onFileSizeExceed" id="UploadCollection"
+								change="onChange" mode="SingleSelectMaster" beforeUploadStarts="onBeforeUploadStarts" items="{path: '/FileSet'}" multiple="true"
+								uploadUrl="/sap/opu/odata/sap/ZPRJ_GESTION_OT_SRV/FileSet" uploadComplete="onUploadComplete" noDataText="{i18n>fichier_error}"
+								noDataDescription="{i18n>add_file}">
+								<items>
+									<UploadCollectionItem documentId="{Id}" fileName="{Filename}"
+										url="/sap/opu/odata/sap/ZPRJ_GESTION_OT_SRV/FileSet(Id=guid'{Id}',Ordre='{oModelHeaderData>/aufnr}')/$value" mimeType="{Mimetype}"
+										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="true"></UploadCollectionItem>
+								</items>
+							</UploadCollection>
+			
 						    </VBox>
 
 							<!-- <Label text="Total">

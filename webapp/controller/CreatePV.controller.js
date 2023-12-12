@@ -1,10 +1,21 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel"
-], function (Controller, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/model/Filter",
+	"../model/formatter",
+	"sap/m/MessageToast"
+], function (Controller, JSONModel, Filter, formatter, MessageToast) {
 	"use strict";
-
+	
+	var lv_ebeln, lv_ebelp;
+	
+	var lv_sId, lv_text;
+	
+	var oFieldItems;
+	
 	return Controller.extend("PP.ZManage_PV.controller.CreatePV", {
+		
+		formatter: formatter,
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -14,68 +25,190 @@ sap.ui.define([
 		onInit: function () {
 			debugger;
 			
-			var oButton = new sap.m.Button({ text: "Hello World!", press: "_onAddSFPF" })
-			var oLabel1 = new sap.m.Label({ text: "F-SF-01"});
-			var oInput1 = new sap.m.Input({ "value": "", "type": "Number"});
-			var oLabel2 = new sap.m.Label({ text: "%Scrap"});
-			var oInput2 = new sap.m.Input({ "value": "", "type": "Number"});
-			var fields  = [];
+			this.lv_ebeln = "";
+			this.lv_ebelp = "";
+			this.lv_txz01 = "";
 			
-			fields.push(oButton);
-			fields.push(oLabel1);
-			fields.push(oInput1);
-			fields.push(oLabel2);
-			fields.push(oInput2);			
-
-            var oData = { Qty1: "12",
-					      Qty2: "23",
-					      Qty3: "45",
-					      Qty4: "56",
-					      Qty5: "69",
-					      TotalScrap: "100",
-					      TotalWaste: "100",
-					      TotalWasteSFPF: "75",
-					      TotalScrapSFPF: "80",
-					      TotalScrapAC: "80",
-					      TotalWasteAC: "75",
-					      BatchFlag: true,
-					      BatchValue: "BATCH01",
-					      COLACSupplyQty: "200",
-					      COLACUsedQty:"200",
-					      COLACnumber: "200",
-					      COLACscrap: "200",
-					      COLACwaste: "200",
-					      fieldinput: []
-				};				
-				
-				
-		    oData.fieldinput.push(fields);
-		    var CreatePVModel = new JSONModel();
-			CreatePVModel.setData(oData);
-			this.getView().setModel(CreatePVModel, "CreatePVModel");
+			var BatchPanel = this.getView().byId("BatchPanel");
 			
-
-			//this.getOwnerComponent().getModel("CreatePVModel").setData(oData);
+			var PanelItems = BatchPanel.getItems();
+			var newPanel = PanelItems[0].clone();
+	
+			var oFormContainers = newPanel.getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
+			var oFormElements   = oFormContainers.getFormElements();
+			this.oFieldItems = oFormElements[0].getFields()[0].getItems();
+			
+			var oRouters = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouters.getRoute("CreatePV").attachPatternMatched(this._onObjectMatched, this);
+			
+			var oData = { QtyCOLACSupply: 0,
+			              QtyCOLACUsed: 0,
+			              QtyCOLACNum: 0, 
+			              QtyCOLACScrap: 0,
+			              QtyCOLACWaste: 0,
+			              TotalPercentScrap: 0,
+			              TotalPercentWaste: 0,
+			              TotalWasteSFPF: 0,
+			              TotalScrapSFPF: 0,
+			              TotalScrapAC: 0,
+			              TotalWasteAC: 0
+			};
+			
+			var CreatePVTotalQtyModel = new JSONModel();
+			CreatePVTotalQtyModel.setData(oData);
+			this.getView().setModel(CreatePVTotalQtyModel, "CreatePVTotalQtyModel");
+			
 		},
 		
-		_onAddSFPF: function (oEvent) {
+		_onObjectMatched: function (oEvent) {
+			debugger;
+			// Get parametre from url
+			this.lv_ebeln = oEvent.getParameter("arguments").Ebeln;
+			this.lv_ebelp = oEvent.getParameter("arguments").Ebelp;
+
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZPRJ_PV_SUBCONTRACTOR_SRV");	
+			
+			var oFilter = new sap.ui.model.Filter({
+				filters: [
+					new sap.ui.model.Filter("ebeln", sap.ui.model.FilterOperator.EQ, this.lv_ebeln),
+					new sap.ui.model.Filter("ebelp", sap.ui.model.FilterOperator.EQ, this.lv_ebelp)
+				],
+				and: true
+			});		
+			
+			var filter = new Array();
+			filter.push(oFilter);
+
+			var oCreatePVModel = new JSONModel();
+			var oController = this;
+
+			oModel.read("/ZMANAGE_PV_HEADER", {
+				filters: filter,
+				success: function (oData, oResponse) {
+					debugger;
+					oCreatePVModel.setData(oData.results[0]);
+					oController.getView().setModel(oCreatePVModel, "CreatePVModel");
+				},
+				//).bind(this),
+				error: function (oError) {
+					debugger;
+					//	alert("error");
+				}
+			});	
+		},
+		
+		_onAddWaste: function (oEvent) {
 			debugger;
            var oForm = oEvent.getSource().getParent().getParent().getParent();
-           var oLength = oForm.getFormElements().length;
-           var oSubjectElement = this.getView().byId("FieldInputElement");
-           var oSubjectElementCopy = oSubjectElement.clone();
-           var oFields = oSubjectElementCopy.getFields()[0];
            
-           //items[0] <- index 0 - button
-           oFields.mAggregations.items[0].setProperty("visible", false); //hide button in succeeding input fields
+           var Id = oEvent.getSource().getId();
            
-           var oInputFields = oFields.mAggregations.items[1].getItems();
+           for ( let x=0; x < oForm.getFields()[0].getItems().length; x++ ){
+           	 if( oForm.getFields()[0].getItems()[x].getItems()[0].getId().includes( Id ) ){
+           	 	var ndx = x;
+           	 	break;
+           	 }
+           }
+			
+           var oFieldItemsCopy = oForm.getFields()[0].getItems()[ndx].clone();
            
-           oForm.insertFormElement(oSubjectElementCopy, oLength + 1);			
+           oFieldItemsCopy.getItems()[0].aCustomStyleClasses[0] = 'hidebutton'; //hide button - css style maintain div space
+           
+           oFieldItemsCopy.getItems()[1].getItems()[3].getItems()[1].setValue(''); //Qty
+           oFieldItemsCopy.getItems()[1].getItems()[2].getItems()[1].setValue(''); //Defect Type Description
+		   oFieldItemsCopy.getItems()[1].getItems()[1].getItems()[1].setValue(''); //Defect Code
+
+           var oItems = oForm.getFields()[0].getItems();
+           oItems.splice( ndx + 1, 0, oFieldItemsCopy);
+          
+           oForm.getFields()[0].removeAllItems();
+           
+           for(let i = 0; i < oItems.length; i++){
+           	 oForm.getFields()[0].addItem(oItems[i]);
+           }
+           
+		},
+		
+		_onAddBatch: function(oEvent) {
+			
+	    	debugger;
+			var BatchPanel = this.getView().byId("BatchPanel");
+			
+			var PanelItems = BatchPanel.getItems();
+			var newPanel = PanelItems[0].clone();
+			
+			newPanel.getContent()[0].getItems()[0].getItems()[1].setValue(''); //batch
+			newPanel.getContent()[0].getItems()[1].getItems()[1].setValue(''); //description
+			newPanel.getContent()[0].getItems()[2].getItems()[1].setValue(''); 
+			newPanel.getContent()[0].getItems()[3].getItems()[1].setValue(''); 
+			newPanel.getContent()[0].getItems()[4].getItems()[1].setValue('');
+			newPanel.getContent()[0].getItems()[5].getItems()[1].setValue('');
+			newPanel.getContent()[0].getItems()[6].getItems()[1].setValue('');
+			
+			newPanel.getContent()[2].setProperty("enabled", true);
+			
+			var oFormContainers = newPanel.getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
+			var oFormElements   = oFormContainers.getFormElements();
+			var oElements = oFormElements;
+			oElements[0].getFields()[0].removeAllItems();
+			
+			for(var i=0; i < this.oFieldItems.length; i++){
+				var oFieldItem = this.oFieldItems[i].clone();     //need to clone again for the new sId
+				oElements[0].getFields()[0].addItem(oFieldItem);
+			}			
+			
+			oFormContainers.removeAllFormElements();
+			oFormContainers.insertFormElement(oElements[0]);
+
+			this.getView().byId("BatchPanel").addItem(newPanel);
+		},
+		
+		_onDeleteBatch: function(oEvent){
+
+			debugger;
+
+			var SelectedId = oEvent.getSource().getId();
+
+			var BatchPanel = this.getView().byId("BatchPanel");
+			var PanelItems = BatchPanel.getItems();		
+			
+			var BatchIndex = 0;
+			for (let i = 0; i < PanelItems.length; i++ ){
+				BatchIndex = i;
+				if( PanelItems[i].getContent()[2].sId == SelectedId ){
+					break;
+				}
+			}
+			
+			BatchPanel.removeItem(BatchIndex);
 		},
 		
 		_onNavBack: function () {
 			debugger;
+			
+			var BatchPanel = this.getView().byId("BatchPanel");
+			var PanelItems = BatchPanel.getItems();
+			
+			for (let y=0; y < PanelItems.length; y++ ){
+				if(y==0){ continue; };
+				this.getView().byId("BatchPanel").removeItem(1);
+			}
+
+			var oFormContainers = PanelItems[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
+			var oFormElements   = oFormContainers.getFormElements();
+			var oElements = oFormElements;
+			oElements[0].getFields()[0].removeAllItems();
+			
+			for(var i=0; i < this.oFieldItems.length; i++){
+				oElements[0].getFields()[0].addItem(this.oFieldItems[i]);
+			}			
+			
+			oFormContainers.removeAllFormElements();
+			oFormContainers.insertFormElement(oElements[0]);		
+			
+			// this._getDialogbatch().destroy(); 
+			// this._getDialogDefect().destroy();
+			
 			var oRouters = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouters.navTo("RouteView1", {}, true);
 		},
@@ -83,13 +216,489 @@ sap.ui.define([
 		_onSaveData: function () {
 			debugger;
 			
-			//var oCreatePVModel = this.getOwnerComponent().getModel("CreatePVModel");///.setProperty("Qty1", "99");
-			
 			var oCreatePVModel = this.getView().getModel("CreatePVModel").getData();
+			var oCreatePVTotalQtyModel = this.getView().getModel("CreatePVTotalQtyModel").getData();
+			
+			var BatchPanel = this.getView().byId("BatchPanel");
+			var PanelItems = BatchPanel.getItems();
+			
+			var BatchItems = [];
+			var CodeGroups = [];
+			
+			for( let i=0; i < PanelItems.length; i++){
+				var oContentItems = PanelItems[i].getContent()[0].getItems();
+				
+				for( let l = 0; l < oContentItems.length; l++ ){
+					
+					if( oContentItems[l].getItems()[1].getId().includes("BatchIDDesc") ){
+						
+						var BatchIDDesc = oContentItems[l].getItems()[1].getValue();	
+					}else if( oContentItems[l].getItems()[1].getId().includes("BatchID") ){
+						
+						var BatchID = oContentItems[l].getItems()[1].getValue();
+					}else if( oContentItems[l].getItems()[1].getId().includes("QtyCOLACSupply") ){
+						
+						var QtyCOLACSupply = oContentItems[l].getItems()[1].getValue();
+					}else if( oContentItems[l].getItems()[1].getId().includes("QtyCOLACUsed") ){
+						
+						var QtyCOLACUsed = oContentItems[l].getItems()[1].getValue();
+					}else if( oContentItems[l].getItems()[1].getId().includes("QtyCOLACNum") ){
+						
+						var QtyCOLACNum = oContentItems[l].getItems()[1].getValue();
+					}else if( oContentItems[l].getItems()[1].getId().includes("TotalQtyScrap") ){
+						
+						var TotalQtyScrap = oContentItems[l].getItems()[1].getValue();
+					}else if( oContentItems[l].getItems()[1].getId().includes("TotalQtyWaste") ){
+						
+						var TotalQtyWaste = oContentItems[l].getItems()[1].getValue();
+					}
+				}
+				
+				BatchItems.push({ batch: BatchID,
+				                  ebeln: oCreatePVModel.ebeln,
+					              ebelp: oCreatePVModel.ebelp,
+					              colac_num_qty: QtyCOLACNum,
+					              colac_scrap_qty: TotalQtyScrap,
+					              colac_supply_qty: QtyCOLACSupply,
+					              colac_used_qty: QtyCOLACUsed,
+					              colac_waste_qty: TotalQtyWaste,
+					              description: BatchIDDesc });
+					              
+				var oFormContainers = PanelItems[i].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
+				var oFormElements   = oFormContainers.getFormElements();
+				var oFieldItems     = oFormElements[0].getFields()[0].getItems();
+				
+					
+				for ( let y=0; y < oFieldItems.length; y++ ){
+					var DefectCode = oFieldItems[y].getItems()[1].getItems()[1].getItems()[1].getValue();
+					var DefectQty  = oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue();
+					
+					if(DefectCode && DefectQty){
+						var BatchID = PanelItems[i].getContent()[0].getItems()[0].getItems()[1].getValue();
+						
+						if( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getId().includes("Z0000001") ){
+							var CodeGrp = "Z0000001";							
+						}else if( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getId().includes("Z0000002") ){
+							var CodeGrp = "Z0000002";
+						}else if( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getId().includes("Z0000003") ){
+							var CodeGrp = "Z0000003";
+						}else if( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getId().includes("Z0000004") ) {
+							var CodeGrp = "Z0000004";
+						}
+						
+						CodeGroups.push({ batch: BatchID,
+						                  codedmg: DefectCode,  //damage code
+							              codegrp: CodeGrp,    //Code Group
+							              fmgeig:  DefectQty,
+							              fmgfrd:  DefectQty });
+					}
+				}
+			};
+			
+			var C = new JSONModel({
+				action:   "C",
+				bsart: oCreatePVModel.bsart,
+				cup_code: oCreatePVModel.numcup,
+				deviceid: oCreatePVModel.deviceid,
+				ebeln: oCreatePVModel.ebeln,
+				ebelp: oCreatePVModel.ebelp,
+				erdat: oCreatePVModel.erdat,
+				erdat2: oCreatePVModel.erdat2,
+			    lifnum: oCreatePVModel.lifnum,
+				matnr: oCreatePVModel.matnr,
+				meins: oCreatePVModel.meins,
+				mgein: oCreatePVModel.mgein,
+				numcup: oCreatePVModel.numcup,
+				qmnum:  oCreatePVModel.qmnum,
+				refnum: oCreatePVModel.refnum,
+				sfcode: oCreatePVModel.sfcode,
+				txz01: oCreatePVModel.txz01,
+				zzvolu: oCreatePVModel.zzvolu,
+				hdr_txt: oCreatePVModel.hdr_txt,
+				to_batch_items: BatchItems,
+				to_codegroup: CodeGroups
+			});
+			
+			var y = {};
+			y = JSON.parse(JSON.stringify(C.oData));
+			var x = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZPRJ_PV_SUBCONTRACTOR_SRV");
+			debugger;
+			var here = this;
+			var flag = "";
+			x.create("/ZMANAGE_PV_HEADER", y, {
+				success: function (e, t) {
+					debugger;
+					
+					if(e.qmnum){
+						var msg = "Notification "  + e.qmnum + " has been created";
+						MessageToast.show(msg);
+					}else {
+						var msg = "Error";
+						MessageToast.show(msg);
+					}
+					
+					// MessageToast.show(t.data.Message);
+					// var text = "ordre a été sauvegardé avec le numéro"
+					// if (t.data.Message.includes(text)) {
+					// 	here.flag = "X";
+					// }
+				},
+				error: function (e) {
+					debugger;
+					MessageToast.show(e.message)
+				}
+			})
+			
+		},
+		
+		onValueHelpBatch: function (oEvent){
+			debugger;
+			this.lv_sId = oEvent.getSource().getId();
+			this.lv_text = oEvent.getSource().getId().replace("BatchID", "BatchIDDesc");
+			
+			this._getDialogbatch().open();
+		},
+		
+		_getDialogbatch: function () {
+			if (!this.dialog_batch) {
+				this.dialog_batch = sap.ui.xmlfragment("PP.ZManage_PV.view.Fragment.BatchSh", this);
+				this.getView().addDependent(this.dialog_batch)
+			}
+			return this.dialog_batch;
+		},
+		
+		closeDialogBatch: function () {
+			this._getDialogbatch().close()
+		},
+
+		onSave_Batch: function (oEvent) {
+			debugger;
+			var e = sap.ui.getCore().byId("table_Batch").getSelectedItem().getBindingContext().getObject();
+			var c = e.Code;
+			var t = e.Text;
+			
+			this.getView().byId( this.lv_sId ).setValue(c);
+			this.getView().byId( this.lv_text ).setValue(t);
+	
+			this._getDialogbatch().close();
+		},
+		
+		onValueHelpDefect: function(oEvent){
+			debugger;
+			this.lv_sId = oEvent.getSource().getId();
+			this.lv_text = oEvent.getSource().getId().replace("DefectID", "DefectIDDesc");
+				
+			this._getDialogDefect().open();
+		},
+		
+		_getDialogDefect: function(){ // Create Dialog
+
+			if (!this.dialog_defect) {  
+				this.dialog_defect = sap.ui.xmlfragment("PP.ZManage_PV.view.Fragment.DefectSh", this);
+				this.getView().addDependent(this.dialog_defect);
+				
+				debugger;
+			}else{
+				var oTable = sap.ui.getCore().byId("smartTable_Defect");
+				
+				if(oTable){
+					oTable.rebindTable(); //re-trigger onBeforeRebindTableDefect function
+				}				
+			}
+			return this.dialog_defect;			
+		},
+
+		closeDialogDefect: function () {
+	
+			this._getDialogDefect().close();
+		},
+		
+		// dialogAfterclose: function () {
+		// 	debugger;
+		// 	// this.dialog_defect.destroy = undefined;
+		// },	
+
+		onSave_Defect : function (oEvent) {
+			debugger;
+			var e = sap.ui.getCore().byId("table_Defect").getSelectedItem().getBindingContext().getObject();
+			
+			this.getView().byId( this.lv_sId ).setValue(e.Code);
+			this.getView().byId( this.lv_text ).setValue(e.Text);
+	
+			this._getDialogDefect().close();
+		},
+		
+		onBeforeRebindTableDefect : function(oEvent){
+			debugger;
+			
+			let value1 = "";
+			
+			if(this.lv_sId.includes("Z0000001")){
+				value1 = "Z0000001";
+			}else if(this.lv_sId.includes("Z0000002")){
+				value1 = "Z0000002";
+			}else if(this.lv_sId.includes("Z0000003")){
+				value1 = "Z0000003";
+			}else if(this.lv_sId.includes("Z0000004")){
+				value1 = "Z0000004";
+			}
+			
+			var oFilter = new Filter({
+				path: "Codegruppe",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: value1
+			});
+			
+			oEvent.getParameter("bindingParams").filters.push(oFilter);
+		},
+		
+		handleDatePickerChange: function (oEvent){
+			// Format date to remove UTC issue
+			var oDatePicker = oEvent.getSource();
+			var oBinding = oDatePicker.getBinding("dateValue");
+			var oNewDate = oDatePicker.getDateValue();
+			if (oNewDate) {
+				var sPath = oBinding.getContext().getPath() + "/" + oBinding.getPath();
+				var oFormatDate = sap.ui.core.format.DateFormat.getDateTimeInstance({
+					pattern: "yyyy-MM-ddTKK:mm:ss"
+				});
+				oBinding.getModel().setProperty(sPath, new Date(oFormatDate.format(oNewDate)));
+			}			
+		},
+		
+		onLiveChange: function (oEvent){
+			debugger;
+			
+			var GroupCode;
+			
+			var Source = oEvent.getSource();
+			var SourceId = Source.sId;
+			
+			if( SourceId.includes("Z0000001") ){
+				GroupCode = "Z0000001";
+				
+			}else if( SourceId.includes("Z0000002") ){
+				GroupCode = "Z0000002";
+				
+			}else if( SourceId.includes("Z0000003") ){
+				GroupCode = "Z0000003";
+				
+			}else if( SourceId.includes("Z0000004") ){
+				GroupCode = "Z0000004";
+			}
+			
+			var PanelId = Source.getEventingParent().getEventingParent().getEventingParent().getEventingParent().getEventingParent().getEventingParent().getEventingParent().getEventingParent().getEventingParent().getEventingParent();
+			
+			var BatchPanel = this.getView().byId("BatchPanel");
+			var PanelItems = BatchPanel.getItems();
+			
+			var SelectedPanel = PanelItems.filter(element => {
+							  return element.sId == PanelId.sId;
+							});
+	
+			var oFormContainers = SelectedPanel[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
+			var oFormElements = oFormContainers.getFormElements();
+			var oFieldItems = oFormElements[0].getFields()[0].getItems();			
+			
+			var SelectedFields = oFieldItems.filter(row => {
+				if( row.sId.includes(GroupCode) ){
+					return row;
+				}
+			});
+			
+			var TotalQty = 0;
+			var PercentageId;
+			var Qty = 0;
+			
+			for (let x=0; x < SelectedFields.length; x++){ //compute total qty per code group
+				debugger;
+				
+				if(SelectedFields[x].getItems()[1].getItems()[3].getItems()[1].getValue() !== '' ){
+					TotalQty += parseInt( SelectedFields[x].getItems()[1].getItems()[3].getItems()[1].getValue() );					
+				}
+			}
+			
+			for (let i=0; i < SelectedFields.length; i++ ){
+				Qty = SelectedFields[i].getItems()[1].getItems()[3].getItems()[1].getValue();
+				
+				var PercentageVal =  Math.round( ( Qty / TotalQty ) * 100 );
+				
+				SelectedFields[i].getItems()[1].getItems()[4].getItems()[1].setValue(PercentageVal)
+			}
+			
+			var TotalQtyScrap = 0;
+			var TotalQtyWaste = 0;
+			
+			for(let y=0; y < oFieldItems.length; y++ ){
+				
+				if( oFieldItems[y].getId().includes("Z0000001") || oFieldItems[y].getId().includes("Z0000003")  ) {  //scrap
+					
+					if( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() !== '' ){
+						
+						TotalQtyScrap += parseInt( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() );						
+					}
+				}else if( oFieldItems[y].getId().includes("Z0000002") || oFieldItems[y].getId().includes("Z0000004") ){ //waste
+					
+					if( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() !== '' ){
+						
+						TotalQtyWaste += parseInt( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() );						
+					}
+				}
+			}
+			
+			SelectedPanel[0].getContent()[0].getItems()[5].getItems()[1].setValue(TotalQtyScrap); //Set Value total Qty of Scrap per batch
+ 			SelectedPanel[0].getContent()[0].getItems()[6].getItems()[1].setValue(TotalQtyWaste); //Set Value total Qty of Waste per batch
 			
 			
+			//Compute Quantities for all batches 			
+ 			var TotalQtyScrapBatch = 0;
+ 			var TotalQtyWasteBatch = 0;
+
+			var TotalScrapSFPF = 0;
+			var TotalWasteSFPF = 0;
+			var TotalScrapAC = 0;
+			var TotalWasteAC = 0;
+			
+ 			//Get total qty f Scrap and waste for all batches
+ 			for ( let l=0; l < PanelItems.length; l++ ){
+ 				if ( PanelItems[l].getContent()[0].getItems()[5].getItems()[1].getValue() !== '' ){
+					TotalQtyScrapBatch += parseInt( PanelItems[l].getContent()[0].getItems()[5].getItems()[1].getValue() ); //Total qty per batch Scrap 					
+ 				}
+ 				
+ 				if ( PanelItems[l].getContent()[0].getItems()[6].getItems()[1].getValue() !== ''  ){
+					TotalQtyWasteBatch += parseInt( PanelItems[l].getContent()[0].getItems()[6].getItems()[1].getValue() ); //Total qty per batch Waste 					
+ 				}
+ 				
+				var oFormContainers = PanelItems[l].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
+				var oFormElements = oFormContainers.getFormElements();
+				var oFieldItems = oFormElements[0].getFields()[0].getItems();
+				
+				for ( let y=0; y < oFieldItems.length; y++){
+					
+					if(oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() !== '') { 
+						if(oFieldItems[y].getId().includes("Z0000001") ){
+							TotalScrapSFPF += parseInt( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() );
+						}else if(oFieldItems[y].getId().includes("Z0000002") ){
+							TotalWasteSFPF += parseInt( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() );
+						}else if(oFieldItems[y].getId().includes("Z0000003") ){
+							TotalScrapAC += parseInt( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() );
+						}else if(oFieldItems[y].getId().includes("Z0000004")){
+							TotalWasteAC += parseInt( oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue() );
+						}						
+					};
+				}
+ 			}
+ 			
+ 			var CreatePVTotalQtyModel = this.getView().getModel("CreatePVTotalQtyModel");
+ 			var CreatePVTotalQtyData = CreatePVTotalQtyModel.getData();
+
+			CreatePVTotalQtyData.TotalScrapSFPF = TotalScrapSFPF;
+			CreatePVTotalQtyData.TotalWasteSFPF = TotalWasteSFPF;
+			CreatePVTotalQtyData.TotalScrapAC = TotalScrapAC;
+			CreatePVTotalQtyData.TotalWasteAC = TotalWasteAC;
+				
+ 			CreatePVTotalQtyData.QtyCOLACScrap = TotalQtyScrapBatch;
+ 			CreatePVTotalQtyData.QtyCOLACWaste = TotalQtyWasteBatch;
+ 			
+ 			var TotalPercentScrap = 0;
+ 			var TotalPercentWaste = 0;
+ 			
+ 			if (CreatePVTotalQtyData.QtyCOLACScrap && CreatePVTotalQtyData.QtyCOLACSupply ) { 
+ 				var TotalPercentScrap =  Math.round( ( CreatePVTotalQtyData.QtyCOLACScrap/ CreatePVTotalQtyData.QtyCOLACSupply ) * 100 );
+ 				CreatePVTotalQtyData.TotalPercentScrap = TotalPercentScrap;
+ 			}
+ 			
+			if (CreatePVTotalQtyData.QtyCOLACWaste && CreatePVTotalQtyData.QtyCOLACSupply ) { 
+ 				var TotalPercentWaste =  Math.round( ( CreatePVTotalQtyData.QtyCOLACWaste/ CreatePVTotalQtyData.QtyCOLACSupply ) * 100 );
+ 				CreatePVTotalQtyData.TotalPercentWaste = TotalPercentWaste;
+ 			}
+ 			
+			CreatePVTotalQtyModel.setData(CreatePVTotalQtyData);
+			this.getView().setModel(CreatePVTotalQtyModel, "CreatePVTotalQtyModel"); 			
+		},
+		
+		onLiveChangeBatch: function(oEvent){
+			debugger;
+			
+			var BatchPanel = this.getView().byId("BatchPanel");
+			var PanelItems = BatchPanel.getItems(); 		
+			
+			var TotalQtyCOLACSupply = 0;
+			var TotalQtyCOLACUsed = 0;
+			var TotalQtyCOLACNum  = 0;
+			
+			for ( let i=0; i < PanelItems.length; i++ ){
+				debugger;
+				
+				if( PanelItems[i].getContent()[0].getItems()[2].getItems()[1].getValue() !== '' ){
+					TotalQtyCOLACSupply += parseInt( PanelItems[i].getContent()[0].getItems()[2].getItems()[1].getValue() );					
+				}
+				
+				if ( PanelItems[i].getContent()[0].getItems()[3].getItems()[1].getValue() !== '' ) {
+					TotalQtyCOLACUsed += parseInt( PanelItems[i].getContent()[0].getItems()[3].getItems()[1].getValue() );					
+				}
+				
+				if( PanelItems[i].getContent()[0].getItems()[4].getItems()[1].getValue() !== '' ){
+					TotalQtyCOLACNum += parseInt( PanelItems[i].getContent()[0].getItems()[4].getItems()[1].getValue() );					
+				}
+			}
+			
+			var CreatePVTotalQtyModel = this.getView().getModel("CreatePVTotalQtyModel");
+ 			var CreatePVTotalQtyData = CreatePVTotalQtyModel.getData();
+ 			
+ 			CreatePVTotalQtyData.QtyCOLACSupply = TotalQtyCOLACSupply;
+ 			CreatePVTotalQtyData.QtyCOLACUsed =  TotalQtyCOLACUsed;               
+ 			CreatePVTotalQtyData.QtyCOLACNum = TotalQtyCOLACNum;    
+ 
+  			var TotalPercentScrap = 0;
+ 			var TotalPercentWaste = 0;
+ 			
+ 			if(CreatePVTotalQtyData.QtyCOLACScrap && CreatePVTotalQtyData.QtyCOLACSupply){
+ 				var TotalPercentScrap =  Math.round( ( CreatePVTotalQtyData.QtyCOLACScrap / CreatePVTotalQtyData.QtyCOLACSupply ) * 100 );
+ 				CreatePVTotalQtyData.TotalPercentScrap = TotalPercentScrap; 			
+ 			}
+ 
+  			if(CreatePVTotalQtyData.QtyCOLACWaste && CreatePVTotalQtyData.QtyCOLACSupply){
+ 				var TotalPercentWaste =  Math.round( ( CreatePVTotalQtyData.QtyCOLACWaste / CreatePVTotalQtyData.QtyCOLACSupply ) * 100 );
+ 				CreatePVTotalQtyData.TotalPercentWaste = TotalPercentWaste; 			
+ 			}
+ 			
+			CreatePVTotalQtyModel.setData(CreatePVTotalQtyData);
+			this.getView().setModel(CreatePVTotalQtyModel, "CreatePVTotalQtyModel");  			
 		}
 
+		// BatchDialogAfterClose: function(){
+		// 	debugger;
+		//     var oView = this.getView()
+		//     var oDialog = oView.byId('BatchSearchHelpDialog');
+		
+		//     //clear dialog Data
+		//     var oDialogData = oDialog.getModel('dialog').getData();
+		//     Object.getOwnPropertyNames(oDialogData).forEach(function(d) {
+		//          oDialogData[d] = null;
+		//      });
+		
+		//   dialogModel.setData(oDialogData);
+		//   oDialog.close();
+		//   oDialog.destroy();			
+		// },
+
+
+		// DefectDialogAfterClose: function(){
+		// 	debugger;
+		//     var oView = this.getView()
+		//     var oDialog = oView.byId('DefectSearchHelpDialog');
+		
+		//     //clear dialog Data
+		//     var oDialogData = oDialog.getModel('dialog').getData();
+		//     Object.getOwnPropertyNames(oDialogData).forEach(function(d) {
+		//          oDialogData[d] = null;
+		//      });
+		
+		//   dialogModel.setData(oDialogData);
+		//   oDialog.close();
+		//   oDialog.destroy();			
+		// },		
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

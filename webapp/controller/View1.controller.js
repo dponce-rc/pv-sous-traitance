@@ -25,7 +25,9 @@ sap.ui.define([
 					
 					for ( let y = 0; y < FilterItems.length; y++ ){
 						if( FilterItems[y].getLabel() == "Delivery Date" ){
-							e.srcControl.getAllFilterItems()[y].setLabel( text.getText("FilterDeliveryDateLabel") );  // index Delivery Date
+							e.srcControl.getAllFilterItems()[y].setLabel( text.getText("FilterDeliveryDateLabel") );  // index Delivery Date filter
+						}else if( FilterItems[y].getLabel() == "Vendor" ) {
+							e.srcControl.getAllFilterItems()[y].setLabel( text.getText("FilterVendorLabel") );  // index Vendor filter
 						}
 					}
 				}
@@ -47,7 +49,11 @@ sap.ui.define([
 							Columns[y].getHeader().setProperty("text", text.getText("smartTable_ResponsiveTable-pv_number") );
 							
 						}else if( Columns[y].sId.includes('smartTable_ResponsiveTable-txz01') ){
+							
 							Columns[y].getHeader().setProperty("text", text.getText("smartTable_ResponsiveTable-txz01") );
+							
+						}else if( Columns[y].sId.includes('smartTable_ResponsiveTable-lifnr') ){
+							Columns[y].getHeader().setProperty("text", text.getText("smartTable_ResponsiveTable-lifnr") );
 						}
 					}
 				}
@@ -141,14 +147,16 @@ sap.ui.define([
 				var oTable = this.getView().byId("tableGestionPv").getSelectedItem().getBindingContext().getObject();
 			
 				var lv_ebeln = oTable.ebeln;
-				var lv_ebelp = oTable.ebelp;            	
+				var lv_ebelp = oTable.ebelp; 
+				var lv_txz01 = oTable.txz01;
 
 	            // var oRouter = this.getOwnerComponent().getRouter();
 	            // oRouter.navTo("CreatePV");
 	            
 				this.getRouter().navTo("CreatePV", {
 						Ebeln : lv_ebeln ,
-						Ebelp: lv_ebelp
+						Ebelp: lv_ebelp,
+						Txz01 : lv_txz01
 					}, true);	            
             
             } else {
@@ -178,7 +186,9 @@ sap.ui.define([
 				aSelectedPV = this._oCustomComboBox.getSelectedKey();
 				
 				if( aSelectedPV == "2"){
-					mBindingParams.filters.push( new sap.ui.model.Filter( "pv_number", FilterOperator.EQ, "0" ) ); 
+					mBindingParams.filters.push( new sap.ui.model.Filter( "pv_number", FilterOperator.EQ, "0" ) );  //Without PV
+				}else{
+					mBindingParams.filters.push( new sap.ui.model.Filter( "pv_number", FilterOperator.NE, "0" ) );  //WIth PV
 				}
 				
         }

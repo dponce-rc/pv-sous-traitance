@@ -1,9 +1,605 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="PP.ZManage_PV.controller.Update"
+<mvc:View xmlns:core="sap.ui.core" 
+		  xmlns:mvc="sap.ui.core.mvc" 
+		  xmlns="sap.m" 
+          xmlns:l="sap.ui.layout"
+          xmlns:f="sap.ui.layout.form"		  
+		  controllerName="PP.ZManage_PV.controller.Update"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
-			<Page title="Modification d'un PV" showNavButton="true" navButtonPress="._onNavBack">
-				<content></content>
+			<Page title="Modification d'un PV" showNavButton="true" navButtonPress="._onNavBack" width="auto">
+				<f:SimpleForm id="customercell" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1" width="auto">
+					<f:content>
+						<VBox>
+							<HBox>
+								<VBox class="rightVBoxStyle leftVBoxStyleSmall">
+									<Label text="{i18n>hdr_Subcontractor}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/lifnum}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_DateCreationFrom}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									
+									<DatePicker id="DateCreationFrom" 
+									  dateValue="{ path: 'CreatePVModel>/erdat', formatter:'.formatter.fnDateTimeFormatter'}"
+									  displayFormat="long"
+									  change="handleDateChange" 
+									  editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />	
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_Author}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/deviceid}" 
+									       editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" >
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PurchaseOrderNo}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/ebeln}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_NameOfCup}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									
+									<Input value="{CreatePVModel>/numcup_desc}" id="NameOfCup" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>
+									<!--<Select forceSelection="false" items="">-->
+									<!--	<core:Item key="" text=""/>-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Select>		-->
+									<!--<Input>-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Input>-->
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PresentationDate}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<DatePicker id="PresentationDate" 
+									  dateValue="{ path: 'CreatePVModel>/erdat2', formatter:'.formatter.fnDateTimeFormatter'}"
+									  displayFormat="long"
+									  change="handleDateChange"
+									  editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />
+									  
+									<!--<DatePicker id="DP8" change="handleChange" showFooter="true">-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</DatePicker>									-->
+								</VBox>
+							</HBox>
+							
+							<HBox>
+								<VBox class="rightVBoxStyle leftVBoxStyleSmall" >
+									<Label text="{i18n>hdr_ProductDesc}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input id="ProductDescription" width="26rem" value="{CreatePVModel>/txz01}" editable="false">
+										<!--<layoutData>-->
+										<!--	<l:GridData span="L4 M2 S2"/>-->
+										<!--</layoutData>-->
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_Cols_ou_AC}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input editable="false"
+											value="{ path: 'CreatePVModel>/mgein',
+													 formatter: '.formatter.fnFloatToDecimalFormatter'
+											}" />
+								  
+									<!--<Input	editable="false"-->
+									<!--		value="{ path: 'CreatePVModel>/mgein',-->
+									<!--                type: 'Integer',-->
+									<!--                formatOptions: { -->
+									<!--                	minIntegerDigits: 3 },-->
+									<!--                constraints: {-->
+									<!--                	maximum: 1000 }-->
+									<!--                }">-->
+									<!--</Input>-->
+									<!--<Input id="UnitofMeasure" value="{CreatePVModel>/mgein}" editable="false" type="Integer"  step="any" >-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Input>									-->
+								</VBox>
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PF_or_AC}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/matnr}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								<VBox class="rightVBoxStyle">
+									<!--<Label text="SF code">-->
+									<Label text="SF code">	     <!-- SF Code -->
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/sfcode}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								<VBox class="rightVBoxStyle" >
+									<Label text="{i18n>hdr_Qty_cases}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<!--<Input value="{CreatePVModel>/qty_cas}" editable="false">-->
+									
+									<Input editable="false"
+										   value="{ path: 'CreatePVModel>/qty_cas',
+													formatter: '.formatter.fnFloatToDecimalFormatter' }" />
+											
+										<layoutData>
+											<l:GridData span="L1 M2 S2" />
+										</layoutData>
+									<!--</Input>									-->
+								</VBox>
+							</HBox>
+							
+							<HBox>
+								<!--<VBox class="rightVBoxStyle leftVBoxStyleSmall">-->
+								<!--	<Label text="Cols /Cases">-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L2 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Label>-->
+
+								<!--	<Input editable="false">-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L1 M2 S2" />-->
+								<!--		</layoutData>-->
+								<!--	</Input>-->
+									
+									<!--<Select forceSelection="false" items="">-->
+									<!--	<core:Item key="" text=""/>-->
+									<!--	<layoutData>-->
+									<!--		<l:GridData span="L1 M2 S2"/>-->
+									<!--	</layoutData>-->
+									<!--</Select>									-->
+								<!--</VBox>-->
+								
+								<!--<VBox class="rightVBoxStyle" >-->
+								<!--	<Label text="{i18n>hdr_Qty_Col_AC}">-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L2 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Label>-->
+								<!--	<Input>-->
+								<!--		<layoutData>-->
+								<!--			<l:GridData span="L1 M2 S2"/>-->
+								<!--		</layoutData>-->
+								<!--	</Input>									-->
+								<!--</VBox>-->
+								
+								<VBox class="rightVBoxStyle leftVBoxStyleSmall" >
+									<Label text="{i18n>hdr_Statuts}"  >
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/submtd_text}" editable="false"  >
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_EPSorNCRef}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/refnum}" 
+									       editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" >
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="{i18n>hdr_PurchaseOrderType}">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/bsart}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+								
+								<VBox class="rightVBoxStyle">
+									<Label text="Vol(cl)">
+										<layoutData>
+											<l:GridData span="L2 M2 S2"/>
+										</layoutData>
+									</Label>
+									<Input value="{CreatePVModel>/zzvolu}" editable="false">
+										<layoutData>
+											<l:GridData span="L1 M2 S2"/>
+										</layoutData>
+									</Input>									
+								</VBox>
+							</HBox>
+						</VBox>
+					</f:content>
+				</f:SimpleForm>
+				<Toolbar>
+					<ToolbarSpacer/>
+					<Button icon="sap-icon://save" type="Accept" text="{i18n>butt_save}" press="._onSaveData" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+					<Button icon="sap-icon://approvals" type="Accept" text="{i18n>butt_submit}" press="._onSaveData" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+					<Button icon="sap-icon://delete" type="Accept" text="{i18n>butt_delete}" press="._onSaveData" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+					<!--<Button text="{i18n>Back}" press=".onFilterData"/>-->
+					<ToolbarSpacer/>
+				</Toolbar>
+
+				<VBox class="sapUiNoContentPadding">
+					<f:SimpleForm id="SimpleFormChange3541" editable="true" layout="ResponsiveGridLayout" columnsL="1" columnsM="1"
+						singleContainerFullSize="false" width="auto">
+						<f:content>
+							<VBox>
+							<Panel class="sapUiResponsiveMargin" width="auto">
+							<VBox class="rightVBoxStyle" >
+								<HBox>
+									<VBox class="rightVBoxStyleL">
+										<Label text="{i18n>Qty_COLorACSupply}"/>   <!-- Qty COL or AC Supply -->
+								   <!-- <Label text="{i18n>Qty_COLorACSupplybyRC}"/> --> <!-- by RC-->
+									</VBox>
+									
+									<VBox class="rightVBoxStyleL">
+									<Label text="{i18n>Qty_COLorACUsed}"/> <!-- Qty COL or AC used -->
+									<!--<Label text="{i18n>Qty_COLorACUsedqty}"/>-->
+									</VBox>
+									
+									<VBox class="rightVBoxStyleL">
+									<Label text="{i18n>Qty_COLACNumDel}"/>
+									<Label text="{i18n>Qty_COLACNumDelv}"/>										
+									</VBox>
+									<VBox class="rightVBoxStyleL"><Label text="{i18n>Qty_COLACScrap}"/></VBox> <!-- Qty COL/AC scrap -->
+									<VBox class="rightVBoxStyleL"><Label text="{i18n>Qty_COLACWaste}"/></VBox> <!-- Qty COL/AC waste -->						
+								</HBox>
+								<HBox>
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="{i18n>Total_Batchs}"  />  <!-- Total batchs-->
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACSupply}" editable="false" type="Number" />											
+									</VBox>
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="{i18n>Total_Batchs}"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACUsed}" editable="false" type="Number" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="{i18n>Total_Batchs}"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACNum}" editable="false" type="Number" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="{i18n>Total_Batchs}"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACScrap}" editable="false" type="Number" />											
+									</VBox>
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="{i18n>Total_Batchs}"  />
+									</FlexBox>
+									<Input width="10rem" value="{CreatePVTotalQtyModel>/QtyCOLACWaste}" editable="false" type="Number" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="{i18n>Total_Perc_Scrap}"  />
+									</FlexBox>
+									<Input width="7rem" value="{CreatePVTotalQtyModel>/TotalPercentScrap}" editable="false" type="Number" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<FlexBox justifyContent="Center">	
+									<Label text="{i18n>Total_Perc_Waste}"  />
+									</FlexBox>
+									<Input width="7rem" value="{CreatePVTotalQtyModel>/TotalPercentWaste}" editable="false" type="Number" />											
+									</VBox>										
+								</HBox>
+								<HBox class = "HBoxStyle">
+									<VBox class="rightVBoxStyle">
+									<Label text="{i18n>Total_Waste_SFPF}"  />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalWasteSFPF}" editable="false" type="Number" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<Label text="{i18n>Total_Scrap_SFPF}"  />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalScrapSFPF}" editable="false" type="Number" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<Label text="{i18n>Total_Scrap_AC}"  />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalScrapAC}" editable="false" type="Number" />											
+									</VBox>	
+									<VBox class="rightVBoxStyle">
+									<Label text="{i18n>Total_Waste_AC}"  />
+									<Input width = "10rem" value="{CreatePVTotalQtyModel>/TotalWasteAC}" editable="false" type="Number" />											
+									</VBox>										
+								</HBox>
+
+							</VBox>
+							</Panel>
+							
+							<VBox id="BatchPanel">
+								<Panel width="auto" class="sapUiResponsiveMargin" expandable="true" expanded="true">
+									<content>
+										<HBox class = "HBoxStyle">
+											<!--<HBox class = "VBoxStyleTop">-->
+											<!--<CheckBox selected="{CreatePVModel>/BatchFlag}" text="BATCH" />-->
+											<!--<VBox class="rightVBoxStyleL">-->
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Batch}"/>
+											<Input width="7rem"  showValueHelp="true" valueHelpRequest=".onValueHelpBatch" required="true" id="BatchID" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />
+											</VBox>
+											<!--</HBox>-->
+	
+											<VBox class="rightVBoxStyle sapUiMediumMarginEnd">
+											<Label text="{i18n>Batch_Description}"/>
+											<Input width="10rem"
+											       id="BatchIDDesc" editable="false"/>
+											</VBox>
+											
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLorACSupply}" />
+											<Input id="QtyCOLACSupply" width = "8rem" liveChange=".onLiveChangeBatch" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />											
+											</VBox>	
+		
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLorACUsed}"  />
+											<Input id="QtyCOLACUsed" width = "8rem"  liveChange=".onLiveChangeBatch" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />											
+											</VBox>		
+											
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLACNumD}"  />
+											<Input id="QtyCOLACNum" width = "8rem"  liveChange=".onLiveChangeBatch" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />											
+											</VBox>
+											
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLACScrap}"   />
+											<Input width = "8rem"  editable="false" id="TotalQtyScrap" type="Number" />											
+											</VBox>
+		
+											<VBox class="rightVBoxStyle">
+											<Label text="{i18n>Qty_COLACWaste}"  />
+											<Input width = "8rem"  editable="false" id="TotalQtyWaste" type="Number" />											
+											</VBox>										
+										</HBox>		
+										
+										<l:Grid defaultSpan="L12 M12 S12" hSpacing="2" width="auto">
+
+										<HBox>
+											<f:Form id="Formdisplay354" maxContainerCols="2">
+						                        <f:layout>
+						                        <f:ResponsiveGridLayout   />
+						                        </f:layout>	
+						                        <f:formContainers>
+						                        	<f:FormContainer>
+						                        		<f:FormElement id="FieldInputElementWaste" >
+						                        			<f:fields>
+						                        				<VBox>
+								                        			<HBox id="Z0000001_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000001" press="._onAddWaste" class="ButtonTopMarin" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc1" width="8rem" editable="false" value="Scrap SF / PF"/> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}" /> 
+								                        				       <Input width="5rem" id="Z0000001_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>		
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}" /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000001_DefectIDDesc"/> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}" /> 
+								                        				       <Input width="5rem" id="Z0000001_Qty" liveChange=".onLiveChange" type="Number" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000001_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>		
+
+								                        			<HBox id="Z0000002_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000002" press="._onAddWaste" class="ButtonTopMarin" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc2" width="8rem" editable="false" value="Waste SF / PF" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}" /> 
+								                        				       <Input width="5rem" id="Z0000002_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>	
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}" /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000002_DefectIDDesc" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}" /> 
+								                        				       <Input  width="5rem" id="Z0000002_Qty" liveChange=".onLiveChange" type="Number" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000002_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>				
+
+								                        			<HBox id="Z0000003_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000003" press="._onAddWaste" class="ButtonTopMarin" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc3" width="8rem" editable="false" value="Scrap AC" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}" /> 
+								                        				       <Input width="5rem" id="Z0000003_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>	
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}" /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000003_DefectIDDesc" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}" /> 
+								                        				       <Input width="5rem" id="Z0000003_Qty"  liveChange=".onLiveChange" type="Number" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000003_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>	
+								                        			
+								                        			<HBox id="Z0000004_hbox"> 
+							                        				   <Button text="{i18n>butt_Add_Defect}" id="Z0000004" press="._onAddWaste" class="ButtonTopMarin" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+						                        					   <HBox class="sapUiMediumMarginBeginEnd sapUiTinyMarginTop" >
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="Code Group" /> 
+								                        				       <Input id="ProbIDDesc4" width="8rem" editable="false" value="Waste AC" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Code}" /> 
+								                        				       <Input width="5rem" id="Z0000004_DefectID" showValueHelp="true" valueHelpRequest=".onValueHelpDefect" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>	
+
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
+								                        				       <Label text="{i18n>Defect_Type}"  /> 
+								                        				       <Input width="18rem" editable="false" id="Z0000004_DefectIDDesc" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="{i18n>Defect_Qty}" /> 
+								                        				       <Input width="5rem" id="Z0000004_Qty" liveChange=".onLiveChange" type="Number" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
+						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="%" /> 
+								                        				       <Input value="{ }" width="5rem" id="Z0000004_Percent" editable="false" type="Number" /> 						                        					   			
+						                        					   		</VBox>
+						                        				       </HBox>
+								                        			</HBox>								                        			
+						                        				</VBox>
+					                        			   	
+						                        			</f:fields>
+						                        		</f:FormElement>
+						                        	</f:FormContainer>
+						                        </f:formContainers>
+											</f:Form>
+										</HBox>	
+										</l:Grid>
+										<Button text="Delete Batch" type="Reject" class="CenterTitleStyle" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" press="_onDeleteBatch"  />
+									</content>
+							    </Panel>
+						    </VBox>
+						    
+						    <Button icon="sap-icon://add" type="Accept" text="{i18n>butt_New_Batch}" press="_onAddBatch" class="sapUiResponsiveMargin" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+						    
+							<Panel width="auto" class="sapUiResponsiveMargin" expandable="true" expanded="true" headerText="Comments">
+								
+								<TextArea id="textAreaWithBinding2" value="{CreatePVModel>/hdr_txt}"
+									showExceededText="true" 
+									maxLength="100" width="100%" 
+									valueState="{= ${/value}.length > 40 ? 'Warning' : 'None' }" 
+									valueLiveUpdate="false" liveChange="handleLiveChange" />							
+							</Panel>
+							
+							<UploadCollection maximumFilenameLength="55" maximumFileSize="1000" fileDeleted="onFileDeleted" class="sapUiResponsiveMargin"
+								filenameLengthExceed="onFilenameLengthExceed" fileRenamed="onFileRenamed" fileSizeExceed="onFileSizeExceed" id="UploadCollection"
+								change="onChange" mode="SingleSelectMaster" beforeUploadStarts="onBeforeUploadStarts" items="{path: '/FileSet'}" multiple="true"
+								uploadUrl="/sap/opu/odata/sap/ZPRJ_GESTION_OT_SRV/FileSet" uploadComplete="onUploadComplete" noDataText="{i18n>fichier_error}"
+								noDataDescription="{i18n>add_file}">
+								<items>
+									<UploadCollectionItem documentId="{Id}" fileName="{Filename}"
+										url="/sap/opu/odata/sap/ZPRJ_GESTION_OT_SRV/FileSet(Id=guid'{Id}',Ordre='{oModelHeaderData>/aufnr}')/$value" mimeType="{Mimetype}"
+										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="true"></UploadCollectionItem>
+								</items>
+							</UploadCollection>
+							
+						    </VBox>
+						</f:content>
+					</f:SimpleForm>
+
+				</VBox>				
 			</Page>
 		</pages>
 	</App>

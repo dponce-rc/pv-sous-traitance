@@ -1,7 +1,8 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="PP.ZManage_PV.controller.DisplayPV">
 	<App>
 		<pages >
-			<Page title="Afficher les PV existants" showNavButton="true" navButtonPress="._onNavBack">
+			<!--<Page title="Afficher les PV existants" showNavButton="true" navButtonPress="._onNavBack"> -->
+			<Page title= "{i18n>DisplayPVTitle}" showNavButton="true" navButtonPress="._onNavBack">
 				<content>
 					<List id="PV_list" items="{oModelPVList>/results}" inset="true"
 						noDataText="Aucun PV créé"  mode="SingleSelectMaster" selectionChange="onSelectionChange">
@@ -11,7 +12,14 @@
 									<ObjectAttribute text="{oModelPVList>SystemStatus}"/>
 									<!--<ObjectAttribute text="{oModelPVList>Ebeln}"/>-->
 									<ObjectAttribute text="{oModelPVList>Ebeln}"/>
-									<ObjectAttribute text="{oModelPVList>Ebelp}"/>
+									<!--<ObjectAttribute text="{oModelPVList>Ebelp}"/>-->
+									<ObjectAttribute text="{ path: 'oModelPVList>Ebelp', 
+									                         type: 'sap.ui.model.odata.type.String',
+									                         constraints: { 
+														         isDigitSequence : true,
+														         maxLength : 5
+														         }
+														     }"/>
 									<!--<ObjectAttribute text="{oModelPVList>Erdat}" />-->
 									<ObjectAttribute text="{ path: 'oModelPVList>Erdat', 
 															 type: 'sap.ui.model.type.DateTime', 

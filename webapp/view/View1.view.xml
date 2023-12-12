@@ -16,11 +16,11 @@
 							<!--<smartFilterBar:ControlConfiguration key="lpein" index="2" groupId="_BASIC" width="300px" visibleInAdvancedArea="true"></smartFilterBar:ControlConfiguration>-->
 							
 							<!-- Begin insert DPO REMC03A-68 -->
-							<smartFilterBar:ControlConfiguration key="PVOption" index="3" label="With / Without PV" width="300px" visibleInAdvancedArea="true"> 
+							<smartFilterBar:ControlConfiguration key="PVOption" index="3" label="{i18n>PVOptionFilter}" width="300px" visibleInAdvancedArea="true"> 
 								<smartFilterBar:customControl>
 									<ComboBox id="ComboBox" selectionChange="customFieldChange" selectedKey="1">
-										<core:Item key="1" text="With PV"/>
-										<core:Item key="2" text="Without PV"/>
+										<core:Item key="1" text="{i18n>WithPVTextComboBox}"/> <!--With PV-->
+										<core:Item key="2" text="{i18n>WithoutPVTextComboBox}"/> <!--Without PV-->
 									</ComboBox>									
 								</smartFilterBar:customControl>	
 							</smartFilterBar:ControlConfiguration>
@@ -51,7 +51,7 @@
 								<!--<Toolbar>-->
 									<!--<Button icon="sap-icon://create-form" text="Créer un PV" press=".onDispalyCreate"/>-->
 									<Button icon="sap-icon://create-form" text="{i18n>ButtonCreatePV}" press=".onDispalyCreate"/>
-									<Button icon="sap-icon://form" text="Display PV" press=".onDisplayPV" />
+									<Button icon="sap-icon://form" text="{i18n>ButtonDisplayPV}" press=".onDisplayPV" />
 								<!--</Toolbar>-->
 							</OverflowToolbar>							
 						</smartTable:customToolbar>
