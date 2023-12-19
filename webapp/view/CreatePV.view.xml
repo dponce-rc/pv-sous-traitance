@@ -640,6 +640,10 @@
 								                        				       <Label text="%" /> 
 								                        				       <Input value="{ }" width="5rem" id="Z0000003_Percent" editable="false" type="Number" /> 						                        					   			
 						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="Component" /> 
+								                        				       <Input value="{ }" width="6rem" id="Z0000003_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent"  /> 						                        					   			
+						                        					   		</VBox>						                        					   		
 						                        				       </HBox>
 								                        			</HBox>	
 								                        			
@@ -669,6 +673,10 @@
 								                        				       <Label text="%" /> 
 								                        				       <Input value="{ }" width="5rem" id="Z0000004_Percent" editable="false" type="Number" /> 						                        					   			
 						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="Component" /> 
+								                        				       <Input value="{ }" width="6rem" id="Z0000004_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent"  /> 						                        					   			
+						                        					   		</VBox>							                        					   		
 						                        				       </HBox>
 								                        			</HBox>								                        			
 						                        				</VBox>

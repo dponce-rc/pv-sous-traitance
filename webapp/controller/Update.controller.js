@@ -71,6 +71,11 @@ sap.ui.define([
 					//	alert("error");
 				}
 			});	
+			var oParams {};
+			oParams = {
+				urlParameters: {
+				"$expand": ["<NavigationName>"]
+			},			
 			
 			var here = this;
 			oModel.read("/ZMANAGE_PV_BATCH_VIEW", {
@@ -123,10 +128,93 @@ sap.ui.define([
 					//	alert("error");
 				}
 			});
+
+			var here = this;
+			oModel.read("/ZCRITICAL_DEFECTCS_PV", {
+				// filters: filter,
+				success: function (oData, oResponse) {
+					debugger;
+					
+					var BatchPanel = here.getView().byId("BatchPanel");
+					var PanelItems = BatchPanel.getItems();	
+				    var oFormContainers = PanelItems[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers();
+					var oForm = oFormContainers[0].getFormElements()[0];
+					var oItems = oForm.getFields()[0].getItems();
+					
+					var ndx = 0;
+					var oFieldItems = PanelItems[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0].getFormElements()[0].getFields()[0].getItems();
+					
+					if( oItems.length > 4 ){
+						return;
+					}
+					
+					for (let i = 0; i < oFieldItems.length; i++){
+						
+						
+						if( oFieldItems[i].getId().includes("Z0000001") ){
+							var CodeGroup = "Z0000001";
+						}else if ( oFieldItems[i].getId().includes("Z0000002") ){
+							var CodeGroup = "Z0000002";
+						}else if( oFieldItems[i].getId().includes("Z0000003") ){
+							var CodeGroup = "Z0000003";
+						}else if ( oFieldItems[i].getId().includes("Z0000004") ){
+							var CodeGroup = "Z0000004";
+						}
+
+						var CodeGroupItems = oData.results.filter(row => {
+							if( row.codegruppe.includes(CodeGroup) ){
+								return row;
+							}
+						});	
+						
+						CodeGroupItems.sort((a, b) => {
+						  if (a.code < b.code  ) {
+						    return -1;
+						  }
+						  if (a.code > b.code  ) {
+						    return 1;
+						  }
+						  // names must be equal
+						  return 0;
+						});
+					
+						for(let l=0; l < CodeGroupItems.length; l++){
+							if(l === 0 ){
+								oItems[ndx].getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[l].code);		
+								oItems[ndx].getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[l].kurztext );
+							}else{
+								var oFieldLine = oFieldItems[i].clone();
+								oFieldLine.getItems()[0].aCustomStyleClasses[0] = 'hidebutton'; 
+								
+					            oFieldLine.getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[l].kurztext );    //Defect Type Description
+							    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[l].code );     //Defect Code
+							    
+					            oItems.splice( ndx, 0, oFieldLine);								
+							}
+							ndx++;
+						}
+					}
+				
+		            oForm.getFields()[0].removeAllItems();
+		           
+		            for(let k = 0; k < oItems.length; k++){
+		              
+		           	  oForm.getFields()[0].addItem(oItems[k]);
+		            }		
+		            
+		            here.oFieldItems = oItems;  //store to global variable
+					 
+				},
+				//).bind(this),
+				error: function (oError) {
+					debugger;
+					//	alert("error");
+				}
+			});
 			
 			var oCreatePVModelTotalQty = new JSONModel();
 			var oControllerUpdate = this;
- 			
+
 			oModel.read("/ZMANAGE_PV_CODEGRP_VIEW", {
 				filters: filter,
 				success: function (oData, oResponse) {
@@ -165,74 +253,109 @@ sap.ui.define([
 						
 						var TotalQtyScrap = 0;
 						var TotalQtyWaste = 0;
+						
+						var TotalLines = 0;
+						
+						var DefectGroup = ['Z0000001','Z0000002','Z0000003', 'Z0000004'];
 							
-						for(let l=0; l < oFieldItems.length; l++){
-							if( oFieldItems[l].getItems()[1].getItems()[1].getItems()[1].getId().includes("Z0000001") ){
-								var CodeGroup = "Z0000001";
-							}else if ( oFieldItems[l].getItems()[1].getItems()[1].getItems()[1].getId().includes("Z0000002") ){
-								var CodeGroup = "Z0000002";
-							}else if( oFieldItems[l].getItems()[1].getItems()[1].getItems()[1].getId().includes("Z0000003") ){
-								var CodeGroup = "Z0000003";
-							}else if ( oFieldItems[l].getItems()[1].getItems()[1].getItems()[1].getId().includes("Z0000004") ){
-								var CodeGroup = "Z0000004";
-							}
-							
+						for(let l=0; l < DefectGroup.length; l++){
+
 							//filter by CodeGroup
 							var CodeGroupItems = CodeGroups.filter(row => {
-								if( row.codegrp.includes(CodeGroup) ){
+								if( row.codegrp.includes(DefectGroup[l]) ){
 									return row;
 								}
 							});	
 							
+							if(CodeGroupItems.length === 0){
+								continue;
+							}
+							
 							var TotalQty = 0;
-			
-							for( let y=0; y < CodeGroupItems.length; y++ ){
+							
+							for ( var k=0; k < CodeGroupItems.length; k++ ){
 								
-								TotalQty += parseInt( CodeGroupItems[y].defect_qty );
-								
-								if(y === 0 ){
-
-									oItems[ndx].getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[y].codedmg );		
-									oItems[ndx].getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[y].shortext );
-									oItems[ndx].getItems()[1].getItems()[3].getItems()[1].setValue( CodeGroupItems[y].defect_qty );
+								for( var j=0; j < oItems.length; j++ ){  //map quantities to dfault critical defects
 									
-								}else{
+									var default_defect = '';
 									
-									var oFieldLine = oFieldItems[l].clone();
-									oFieldLine.getItems()[0].aCustomStyleClasses[0] = 'hidebutton'; 
-									
-						            oFieldLine.getItems()[1].getItems()[3].getItems()[1].setValue( CodeGroupItems[y].defect_qty );  //Qty
-						            oFieldLine.getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[y].shortext );    //Defect Type Description
-								    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[y].codedmg );     //Defect Code
-								    
-						            oItems.splice( ndx, 0, oFieldLine);
-								}
-								ndx++;
-								
-								if( CodeGroup == "Z0000001" || CodeGroup == "Z0000003" ){
-									TotalQtyScrap += parseInt( CodeGroupItems[y].defect_qty ); // total Qty of Scrap per batch
-									
-									if( CodeGroup == "Z0000001" ){ // Scrap SF / PF
-										TotalScrapSFPF += parseInt( CodeGroupItems[y].defect_qty ); // Total Scrap SF PF of all Batches
-									}else { // Scrap AC
-										TotalScrapAC += parseInt( CodeGroupItems[y].defect_qty );  // Total Scrap AC of all Batches
+									if( oItems[j].getId().includes( DefectGroup[l] ) && 
+									    oItems[j].getItems()[1].getItems()[1].getItems()[1].getValue() === CodeGroupItems[k].codedmg  ){
+										
+										TotalQty += parseInt( CodeGroupItems[k].defect_qty );
+											
+										oItems[j].getItems()[1].getItems()[3].getItems()[1].setValue( CodeGroupItems[k].defect_qty );
+										
+										default_defect = 'X';
+		
+										break;
+									}else{
+										continue;
 									}
-								}else if( CodeGroup == "Z0000002" || CodeGroup == "Z0000004" ){
-									TotalQtyWaste += parseInt( CodeGroupItems[y].defect_qty ); // total Qty of waste per batch
-									
-									if( CodeGroup == "Z0000002" ){ // Waste SF / PF
-										TotalWasteSFPF += parseInt( CodeGroupItems[y].defect_qty ); //Total Waste SF PF of all Batches
-									}else { // Wastep AC
-										TotalWasteAC += parseInt( CodeGroupItems[y].defect_qty );   //Total Waste AC of all Batches
-									}									
 								}
+								
+								if( default_defect === ''){
+									TotalQty += parseInt( CodeGroupItems[k].defect_qty );
+									
+									switch (  DefectGroup[l] ){
+										case "Z0000001":
+											TotalLines = parseInt( oItems.filter( element => { return element.sId.includes( "Z0000001" ) } ).length );
+											break;
+										case "Z0000002":
+											TotalLines = parseInt( oItems.filter( element => { return element.sId.includes( "Z0000001" ) } ).length ) + 
+										            	 parseInt( oItems.filter( element => { return element.sId.includes( "Z0000002" ) } ).length );
+										    break;
+										case "Z0000003":
+											TotalLines = parseInt( oItems.filter( element => { return element.sId.includes( "Z0000001" ) } ).length ) + 
+											             parseInt( oItems.filter( element => { return element.sId.includes( "Z0000002" ) } ).length ) +		
+											             parseInt( oItems.filter( element => { return element.sId.includes( "Z0000003" ) } ).length );	
+											break;
+										case "Z0000004":
+											TotalLines = parseInt( oItems.filter( element => { return element.sId.includes( "Z0000001" ) } ).length ) + 
+											             parseInt( oItems.filter( element => { return element.sId.includes( "Z0000002" ) } ).length ) +		
+											             parseInt( oItems.filter( element => { return element.sId.includes( "Z0000003" ) } ).length ) +			
+											             parseInt( oItems.filter( element => { return element.sId.includes( "Z0000004" ) } ).length );		
+											 break;
+									}
+									
+									var oFieldLine = oItems[TotalLines - 1].clone();
+									oFieldLine.getItems()[0].aCustomStyleClasses[0] = 'hidebutton';	
+									
+						            oFieldLine.getItems()[1].getItems()[3].getItems()[1].setValue( CodeGroupItems[k].defect_qty );  //Qty
+						            oFieldLine.getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[k].shortext );    //Defect Type Description
+								    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[k].codedmg );     //Defect Code								
+	
+																		  
+	        						oItems.splice( TotalLines, 0, oFieldLine); 					
+								}
+								
+								default_defect = '';
+
+										
+								if( DefectGroup[l] == "Z0000001" || DefectGroup[l] == "Z0000003" ){
+									TotalQtyScrap += parseInt( CodeGroupItems[k].defect_qty ); // total Qty of Scrap per batch
+								
+									if( DefectGroup[l] == "Z0000001" ){ // Scrap SF / PF
+										TotalScrapSFPF += parseInt( CodeGroupItems[k].defect_qty ); // Total Scrap SF PF of all Batches
+									}else { // Scrap AC
+										TotalScrapAC += parseInt( CodeGroupItems[k].defect_qty );  // Total Scrap AC of all Batches
+									}
+								}else if( DefectGroup[l] == "Z0000002" || DefectGroup[l] == "Z0000004" ){
+									TotalQtyWaste += parseInt( CodeGroupItems[k].defect_qty ); // total Qty of waste per batch
+									
+									if( DefectGroup[l] == "Z0000002" ){ // Waste SF / PF
+										TotalWasteSFPF += parseInt( CodeGroupItems[k].defect_qty ); //Total Waste SF PF of all Batches
+									}else { // Wastep AC
+										TotalWasteAC += parseInt( CodeGroupItems[k].defect_qty );   //Total Waste AC of all Batches
+									}									
+								}								
 							}
 							
 				            debugger;
 				            var Qty = 0;
 				            for ( let x=0 ; x < oItems.length; x++ ){
 				            	
-				            	if( oItems[x].getItems()[1].getItems()[3].getItems()[1].getId().includes( CodeGroup ) &&
+				            	if( oItems[x].getItems()[1].getItems()[3].getItems()[1].getId().includes( DefectGroup[l] ) &&
 				            	    oItems[x].getItems()[1].getItems()[3].getItems()[1].getValue() ){
 									Qty = oItems[x].getItems()[1].getItems()[3].getItems()[1].getValue();
 									var PercentageVal =  Math.round( ( Qty / TotalQty ) * 100 );
@@ -301,6 +424,7 @@ sap.ui.define([
 					//	alert("error");
 				}
 			});			
+	
 		},
 
 		onValueHelpBatch: function (oEvent){
@@ -387,7 +511,10 @@ sap.ui.define([
            	 	break;
            	 }
            }
-			
+
+		   var DefectCodes = oForm.getFields()[0].getItems().filter( element => {
+																	  return element.sId.includes( Id ) } );
+																	  
            var oFieldItemsCopy = oForm.getFields()[0].getItems()[ndx].clone();
            
            oFieldItemsCopy.getItems()[0].aCustomStyleClasses[0] = 'hidebutton'; //hide button - css style maintain div space
@@ -397,8 +524,9 @@ sap.ui.define([
 		   oFieldItemsCopy.getItems()[1].getItems()[1].getItems()[1].setValue(''); //Defect Code
 
            var oItems = oForm.getFields()[0].getItems();
-           oItems.splice( ndx + 1, 0, oFieldItemsCopy);
-          
+           //oItems.splice( ndx + 1, 0, oFieldItemsCopy);
+           oItems.splice( DefectCodes.length + ndx, 0, oFieldItemsCopy);     
+           
            oForm.getFields()[0].removeAllItems();
            
            for(let i = 0; i < oItems.length; i++){
@@ -854,6 +982,10 @@ sap.ui.define([
 			
 			for(var i=0; i < this.oFieldItems.length; i++){
 				var oFieldItem = this.oFieldItems[i].clone();     //need to clone again for the new sId
+				oFieldItem.getItems()[1].getItems()[1].getItems()[1].setValue('');
+				oFieldItem.getItems()[1].getItems()[2].getItems()[1].setValue('');
+				oFieldItem.getItems()[1].getItems()[3].getItems()[1].setValue('');
+				oFieldItem.getItems()[1].getItems()[4].getItems()[1].setValue('');
 				oElements[0].getFields()[0].addItem(oFieldItem);
 			}			
 			
@@ -892,7 +1024,8 @@ sap.ui.define([
 			
 			for (let y=0; y < PanelItems.length; y++ ){
 				if(y==0){ continue; };
-				this.getView().byId("BatchPanel").removeItem(1);
+				//this.getView().byId("BatchPanel").removeItem(1);
+				BatchPanel.removeItem(1);
 			}
 
 			var oFormContainers = PanelItems[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
@@ -901,8 +1034,8 @@ sap.ui.define([
 			oElements[0].getFields()[0].removeAllItems();
 			
 			for(var i=0; i < this.oFieldItems.length; i++){
-				this.oFieldItems[i].getItems()[1].getItems()[1].getItems()[1].setValue('');
-				this.oFieldItems[i].getItems()[1].getItems()[2].getItems()[1].setValue('');
+				// this.oFieldItems[i].getItems()[1].getItems()[1].getItems()[1].setValue('');
+				// this.oFieldItems[i].getItems()[1].getItems()[2].getItems()[1].setValue('');
 				this.oFieldItems[i].getItems()[1].getItems()[3].getItems()[1].setValue('');
 				this.oFieldItems[i].getItems()[1].getItems()[4].getItems()[1].setValue('');
 				oElements[0].getFields()[0].addItem(this.oFieldItems[i]);

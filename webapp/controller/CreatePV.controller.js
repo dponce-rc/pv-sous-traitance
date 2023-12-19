@@ -95,6 +95,85 @@ sap.ui.define([
 					//	alert("error");
 				}
 			});	
+			
+			var here = this;
+			oModel.read("/ZCRITICAL_DEFECTCS_PV", {
+				// filters: filter,
+				success: function (oData, oResponse) {
+					debugger;
+					
+					var BatchPanel = here.getView().byId("BatchPanel");
+					var PanelItems = BatchPanel.getItems();	
+				    var oFormContainers = PanelItems[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers();
+					var oForm = oFormContainers[0].getFormElements()[0];
+					var oItems = oForm.getFields()[0].getItems();
+					
+					var ndx = 0;
+					var oFieldItems = PanelItems[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0].getFormElements()[0].getFields()[0].getItems();
+					
+					for (let i = 0; i < oFieldItems.length; i++){
+						
+						
+						if( oFieldItems[i].getId().includes("Z0000001") ){
+							var CodeGroup = "Z0000001";
+						}else if ( oFieldItems[i].getId().includes("Z0000002") ){
+							var CodeGroup = "Z0000002";
+						}else if( oFieldItems[i].getId().includes("Z0000003") ){
+							var CodeGroup = "Z0000003";
+						}else if ( oFieldItems[i].getId().includes("Z0000004") ){
+							var CodeGroup = "Z0000004";
+						}
+
+						var CodeGroupItems = oData.results.filter(row => {
+							if( row.codegruppe.includes(CodeGroup) ){
+								return row;
+							}
+						});	
+						
+						CodeGroupItems.sort((a, b) => {
+						  if (a.code < b.code  ) {
+						    return -1;
+						  }
+						  if (a.code > b.code  ) {
+						    return 1;
+						  }
+						  // names must be equal
+						  return 0;
+						});
+					
+						for(let l=0; l < CodeGroupItems.length; l++){
+							if(l === 0 ){
+								oItems[ndx].getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[l].code);		
+								oItems[ndx].getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[l].kurztext );
+							}else{
+								var oFieldLine = oFieldItems[i].clone();
+								oFieldLine.getItems()[0].aCustomStyleClasses[0] = 'hidebutton'; 
+								
+					            oFieldLine.getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[l].kurztext );    //Defect Type Description
+							    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[l].code );     //Defect Code
+							    
+					            oItems.splice( ndx, 0, oFieldLine);								
+							}
+							ndx++;
+						}
+					}
+				
+		            oForm.getFields()[0].removeAllItems();
+		           
+		            for(let k = 0; k < oItems.length; k++){
+		              
+		           	  oForm.getFields()[0].addItem(oItems[k]);
+		            }		
+		            
+		            here.oFieldItems = oItems;  //store to global variable
+					 
+				},
+				//).bind(this),
+				error: function (oError) {
+					debugger;
+					//	alert("error");
+				}
+			});			
 		},
 		
 		_onAddWaste: function (oEvent) {
@@ -109,6 +188,9 @@ sap.ui.define([
            	 	break;
            	 }
            }
+							
+		   var DefectCodes = oForm.getFields()[0].getItems().filter( element => {
+																	  return element.sId.includes( Id ) } );
 			
            var oFieldItemsCopy = oForm.getFields()[0].getItems()[ndx].clone();
            
@@ -119,7 +201,8 @@ sap.ui.define([
 		   oFieldItemsCopy.getItems()[1].getItems()[1].getItems()[1].setValue(''); //Defect Code
 
            var oItems = oForm.getFields()[0].getItems();
-           oItems.splice( ndx + 1, 0, oFieldItemsCopy);
+           //oItems.splice( ndx + 1, 0, oFieldItemsCopy);
+           oItems.splice( DefectCodes.length + ndx, 0, oFieldItemsCopy);
           
            oForm.getFields()[0].removeAllItems();
            
@@ -416,7 +499,9 @@ sap.ui.define([
 		// dialogAfterclose: function () {
 		// 	debugger;
 		// 	// this.dialog_defect.destroy = undefined;
-		// },	
+		// },
+		
+
 
 		onSave_Defect : function (oEvent) {
 			debugger;
@@ -427,6 +512,44 @@ sap.ui.define([
 	
 			this._getDialogDefect().close();
 		},
+
+		onValueHelpComponent: function(oEvent){
+			debugger;
+			this.lv_sId = oEvent.getSource().getId();
+			this.lv_text = oEvent.getSource().getId().replace("DefectID", "DefectIDDesc");
+				
+			this._getDialogComponent().open();			
+		},
+		
+		_getDialogComponent: function(){
+			if (!this.dialog_component) {  
+				this.dialog_component = sap.ui.xmlfragment("PP.ZManage_PV.view.Fragment.ComponentSh", this);
+				this.getView().addDependent(this.dialog_component);
+				
+				debugger;
+			}else{
+				var oTable = sap.ui.getCore().byId("smartTable_Component");
+				
+				if(oTable){
+					oTable.rebindTable(); //re-trigger onBeforeRebindTableComponent function
+				}				
+			}
+			return this.dialog_component;				
+		},
+
+		onSave_Component : function (oEvent) {
+			debugger;
+			var e = sap.ui.getCore().byId("table_Component").getSelectedItem().getBindingContext().getObject();
+			
+			this.getView().byId( this.lv_sId ).setValue(e.Component);
+	
+			this._getDialogComponent().close();
+		},
+		
+		closeDialogComponent: function () {
+	
+			this._getDialogComponent().close();
+		},		
 		
 		onBeforeRebindTableDefect : function(oEvent){
 			debugger;
@@ -450,6 +573,27 @@ sap.ui.define([
 			});
 			
 			oEvent.getParameter("bindingParams").filters.push(oFilter);
+		},
+		
+		onBeforeRebindTableComponent : function(oEvent){
+			debugger;
+
+			var oCreatePVModel = this.getView().getModel("CreatePVModel").getData();
+			var lv_ebeln =  oCreatePVModel.ebeln;
+			var lv_ebelp =  oCreatePVModel.ebelp;	
+			
+			var oFilter = new sap.ui.model.Filter({
+				filters: [
+					new sap.ui.model.Filter("PurchaseOrder", sap.ui.model.FilterOperator.EQ, this.lv_ebeln),
+					new sap.ui.model.Filter("PurchaseOrderItem", sap.ui.model.FilterOperator.EQ, this.lv_ebelp)
+				],
+				and: true
+			});		
+			
+			// var filter = new Array();
+			// filter.push(oFilter);
+			
+			oEvent.getParameter("bindingParams").filters.push(oFilter);			
 		},
 		
 		handleDatePickerChange: function (oEvent){
