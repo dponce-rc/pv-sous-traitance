@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: pp.zmanage_pv
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          destination: FIORI_DFO_301
+          url: http://fiori4h-dev.remy-cointreau.com:443
+        app:
+          name: ZMANAGE_PV
+          description: PV Sous Traitance
+          package: ZPV
+          transport: DFOK900992
+        exclude:
+          - /test/

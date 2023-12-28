@@ -59,7 +59,7 @@
 											<l:GridData span="L2 M2 S2"/>
 										</layoutData>
 									</Label>
-									<Input value="{CreatePVModel>/ebeln}" editable="false">
+									<Input value="{CreatePVModel>/ebeln} {CreatePVModel>/ebelp}" editable="false">
 										<layoutData>
 											<l:GridData span="L1 M2 S2"/>
 										</layoutData>
@@ -449,7 +449,7 @@
 
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="Code Group" /> 
-								                        				       <Input id="ProbIDDesc1" width="8rem" editable="false" value="Scrap SF / PF"/> 						                        					   			
+								                        				       <Input id="ProbIDDesc1" width="8rem" editable="false" value="{i18n>Z0000001_CodeGroup}"/> 		<!-- Scrap SF / PF-->				                        					   			
 						                        					   		</VBox>
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="{i18n>Defect_Code}" /> 
@@ -478,7 +478,7 @@
 
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="Code Group" /> 
-								                        				       <Input id="ProbIDDesc2" width="8rem" editable="false" value="Waste SF / PF" /> 						                        					   			
+								                        				       <Input id="ProbIDDesc2" width="8rem" editable="false" value="{i18n>Z0000002_CodeGroup}" /> 	 <!-- Waste SF / PF-->					                        					   			
 						                        					   		</VBox>
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="{i18n>Defect_Code}" /> 
@@ -507,7 +507,7 @@
 
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="Code Group" /> 
-								                        				       <Input id="ProbIDDesc3" width="8rem" editable="false" value="Scrap AC" /> 						                        					   			
+								                        				       <Input id="ProbIDDesc3" width="8rem" editable="false" value="{i18n>Z0000003_CodeGroup}" /> 		<!-- Scrap AC -->				                        					   			
 						                        					   		</VBox>
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="{i18n>Defect_Code}" /> 
@@ -527,6 +527,10 @@
 								                        				       <Label text="%" /> 
 								                        				       <Input value="{ }" width="5rem" id="Z0000003_Percent" editable="false" type="Number" /> 						                        					   			
 						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="Component" /> 
+								                        				       <Input width="7rem" id="Z0000003_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent" /> 						                        					   			
+						                        					   		</VBox>																			
 						                        				       </HBox>
 								                        			</HBox>	
 								                        			
@@ -536,7 +540,7 @@
 
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="Code Group" /> 
-								                        				       <Input id="ProbIDDesc4" width="8rem" editable="false" value="Waste AC" /> 						                        					   			
+								                        				       <Input id="ProbIDDesc4" width="8rem" editable="false" value="{i18n>Z0000004_CodeGroup}" /> 		<!-- Waste AC-->				                        					   			
 						                        					   		</VBox>
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiSmallMarginBegin">
 								                        				       <Label text="{i18n>Defect_Code}" /> 
@@ -556,6 +560,10 @@
 								                        				       <Label text="%" /> 
 								                        				       <Input value="{ }" width="5rem" id="Z0000004_Percent" editable="false" type="Number" /> 						                        					   			
 						                        					   		</VBox>
+						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
+								                        				       <Label text="Component" /> 
+								                        				       <Input width="7rem" id="Z0000004_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent" /> 						                        					   			
+						                        					   		</VBox>																				
 						                        				       </HBox>
 								                        			</HBox>								                        			
 						                        				</VBox>
@@ -586,12 +594,12 @@
 							<UploadCollection maximumFilenameLength="55" maximumFileSize="1000" fileDeleted="onFileDeleted" class="sapUiResponsiveMargin"
 								filenameLengthExceed="onFilenameLengthExceed" fileRenamed="onFileRenamed" fileSizeExceed="onFileSizeExceed" id="UploadCollection"
 								change="onChange" mode="SingleSelectMaster" beforeUploadStarts="onBeforeUploadStarts" items="{path: '/FileSet'}" multiple="true"
-								uploadUrl="/sap/opu/odata/sap/ZPRJ_GESTION_OT_SRV/FileSet" uploadComplete="onUploadComplete" noDataText="{i18n>fichier_error}"
+								uploadUrl="/sap/opu/odata/sap/ZPRJ_PV_SUBCONTRACTOR_SRV/FileSet" uploadComplete="onUploadComplete" noDataText="{i18n>fichier_error}"
 								noDataDescription="{i18n>add_file}">
 								<items>
 									<UploadCollectionItem documentId="{Id}" fileName="{Filename}"
-										url="/sap/opu/odata/sap/ZPRJ_GESTION_OT_SRV/FileSet(Id=guid'{Id}',Ordre='{oModelHeaderData>/aufnr}')/$value" mimeType="{Mimetype}"
-										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="true"></UploadCollectionItem>
+										url="/sap/opu/odata/sap/ZPRJ_PV_SUBCONTRACTOR_SRV/FileSet(Id=guid'{Id}',Ordre='{CreatePVModel>/qmnum}')/$value" mimeType="{Mimetype}"
+										enableEdit="true" enableDelete="true" visibleDelete="true" visibleEdit="false"></UploadCollectionItem>
 								</items>
 							</UploadCollection>
 							

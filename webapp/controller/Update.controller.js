@@ -3,10 +3,16 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/model/Filter",
 	"../model/formatter",
-	"sap/m/MessageToast"
-], function (Controller, JSONModel, Filter, formatter, MessageToast) {
+	"sap/m/MessageToast",
+	"sap/ui/model/FilterType",
+	"sap/ui/model/FilterOperator"
+], function (Controller, JSONModel, Filter, formatter, MessageToast, FilterType, FilterOperator) {
 	"use strict";
-	
+
+	function RemoveDuplicatesBy(arr, key) {
+		return [...new Map(arr.map(item => [item[key], item])).values()]
+	}
+
 	var lv_qmnum;
 	var oFieldItems;
 	var oPanelItems = [];
@@ -32,7 +38,12 @@ sap.ui.define([
 			var oFormContainers = newPanel.getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0];
 			var oFormElements   = oFormContainers.getFormElements();
 			this.oFieldItems = oFormElements[0].getFields()[0].getItems();
- 			
+
+			var a = this.getView().byId("UploadCollection");
+			a.setUploadUrl("/sap/opu/odata/sap/ZPRJ_GESTION_OT_SRV/FileSet");
+			var s = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZPRJ_PV_SUBCONTRACTOR_SRV", false);
+			this.getView().setModel(s)
+
 			var oRouters = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouters.getRoute("Update").attachPatternMatched(this._onObjectMatched, this);
 			
@@ -40,98 +51,19 @@ sap.ui.define([
 		
 		_onObjectMatched: function (oEvent) {
 			debugger;
-			this.lv_qmnum = oEvent.getParameter("arguments").Qmnum;
- 			
+
+			this.lv_qmnum = oEvent.getParameter("arguments").Qmnum;	
+
+			var UploadCollection = this.getView().byId("UploadCollection");
+			var FileItems = UploadCollection.getBinding("items");
+			var Filters = [];
+			Filters.push(new Filter("Ordre", FilterOperator.EQ, this.lv_qmnum));
+			FileItems.filter(Filters, FilterType.Application);
+
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZPRJ_PV_SUBCONTRACTOR_SRV");	
-			
-			var oFilter = new sap.ui.model.Filter({
-				filters: [
-					new sap.ui.model.Filter("qmnum", sap.ui.model.FilterOperator.EQ, this.lv_qmnum)
-				],
-				and: true
-			});		
-			
-			var filter = new Array();
-			filter.push(oFilter);
-
-			var oCreatePVModel = new JSONModel();
-			var oController = this;
-
-			oModel.read("/ZMANAGE_PV_HEADER", {
-				filters: filter,
-				success: function (oData, oResponse) {
-					debugger;
-					oCreatePVModel.setData(oData.results[0]);
-					oController.getView().setModel(oCreatePVModel, "CreatePVModel");
-					
-				},
-				//).bind(this),
-				error: function (oError) {
-					debugger;
-					//	alert("error");
-				}
-			});	
-			var oParams {};
-			oParams = {
-				urlParameters: {
-				"$expand": ["<NavigationName>"]
-			},			
-			
-			var here = this;
-			oModel.read("/ZMANAGE_PV_BATCH_VIEW", {
-				filters: filter,
-				success: function (oData, oResponse) {
-					debugger;
-					
-					var BatchPanel = here.getView().byId("BatchPanel");
-					var PanelItems = BatchPanel.getItems();	
-					
-					PanelItems[0].getContent()[2].setProperty("enabled", false); //Disable Delete Batch button on the first Batch Item
-					
-					if( oData.results.length > 1 ){
-						for ( var i=0; i < oData.results.length; i++ ){
-							if( i == 0 ){
-								PanelItems[0].getContent()[0].getItems()[0].getItems()[1].setValue(oData.results[i].batch );            //batch
-								PanelItems[0].getContent()[0].getItems()[1].getItems()[1].setValue(oData.results[i].description );      //description
-								PanelItems[0].getContent()[0].getItems()[2].getItems()[1].setValue(oData.results[i].colac_supply_qty);  //Qty COL or AC Supply  
-								PanelItems[0].getContent()[0].getItems()[3].getItems()[1].setValue(oData.results[i].colac_used_qty);    //Qty COL or AC Used
-								PanelItems[0].getContent()[0].getItems()[4].getItems()[1].setValue(oData.results[i].colac_num_qty);     //Qty COL or AC Numbers
-								PanelItems[0].getContent()[0].getItems()[5].getItems()[1].setValue(oData.results[i].colac_scrap_qty);   //Qty COL or AC Scrap
-								PanelItems[0].getContent()[0].getItems()[6].getItems()[1].setValue(oData.results[i].colac_waste_qty);   //Qty COL or AC Waste								
-							}else{
-								var newPanel = PanelItems[0].clone();
-
-								newPanel.getContent()[0].getItems()[0].getItems()[1].setValue(oData.results[i].batch );            //batch
-								newPanel.getContent()[0].getItems()[1].getItems()[1].setValue(oData.results[i].description );      //description
-								newPanel.getContent()[0].getItems()[2].getItems()[1].setValue(oData.results[i].colac_supply_qty);  //Qty COL or AC Supply  
-								newPanel.getContent()[0].getItems()[3].getItems()[1].setValue(oData.results[i].colac_used_qty);    //Qty COL or AC Used
-								newPanel.getContent()[0].getItems()[4].getItems()[1].setValue(oData.results[i].colac_num_qty);     //Qty COL or AC Numbers
-								newPanel.getContent()[0].getItems()[5].getItems()[1].setValue(oData.results[i].colac_scrap_qty);   //Qty COL or AC Scrap
-								newPanel.getContent()[0].getItems()[6].getItems()[1].setValue(oData.results[i].colac_waste_qty);   //Qty COL or AC Waste	
-					
-								here.getView().byId("BatchPanel").addItem(newPanel);								
-							}
-						}						
-					}else{
-						PanelItems[0].getContent()[0].getItems()[0].getItems()[1].setValue(oData.results[0].batch );            //batch
-						PanelItems[0].getContent()[0].getItems()[1].getItems()[1].setValue(oData.results[0].description );      //description
-						PanelItems[0].getContent()[0].getItems()[2].getItems()[1].setValue(oData.results[0].colac_supply_qty);  //Qty COL or AC Supply  
-						PanelItems[0].getContent()[0].getItems()[3].getItems()[1].setValue(oData.results[0].colac_used_qty);    //Qty COL or AC Used
-						PanelItems[0].getContent()[0].getItems()[4].getItems()[1].setValue(oData.results[0].colac_num_qty);     //Qty COL or AC Numbers
-						PanelItems[0].getContent()[0].getItems()[5].getItems()[1].setValue(oData.results[0].colac_scrap_qty);   //Qty COL or AC Scrap
-						PanelItems[0].getContent()[0].getItems()[6].getItems()[1].setValue(oData.results[0].colac_waste_qty);   //Qty COL or AC Waste						
-					}
-				},
-				//).bind(this),
-				error: function (oError) {
-					debugger;
-					//	alert("error");
-				}
-			});
 
 			var here = this;
 			oModel.read("/ZCRITICAL_DEFECTCS_PV", {
-				// filters: filter,
 				success: function (oData, oResponse) {
 					debugger;
 					
@@ -148,9 +80,7 @@ sap.ui.define([
 						return;
 					}
 					
-					for (let i = 0; i < oFieldItems.length; i++){
-						
-						
+					for (let i = 0; i < oFieldItems.length; i++){	
 						if( oFieldItems[i].getId().includes("Z0000001") ){
 							var CodeGroup = "Z0000001";
 						}else if ( oFieldItems[i].getId().includes("Z0000002") ){
@@ -210,19 +140,75 @@ sap.ui.define([
 					debugger;
 					//	alert("error");
 				}
-			});
+			});					
 			
-			var oCreatePVModelTotalQty = new JSONModel();
-			var oControllerUpdate = this;
+			var oFilter = new sap.ui.model.Filter({
+				filters: [
+					new sap.ui.model.Filter("qmnum", sap.ui.model.FilterOperator.EQ, this.lv_qmnum)
+				],
+				and: true
+			});		
+			
+			var filter = new Array();
+			filter.push(oFilter);
 
-			oModel.read("/ZMANAGE_PV_CODEGRP_VIEW", {
+			var oCreatePVModel = new JSONModel();
+			var oCreatePVModelTotalQty = new JSONModel();
+			var oController = this;
+
+			oModel.read("/ZMANAGE_PV_HEADER", {
+				urlParameters: {
+					"$expand": "to_batch_items,to_codegroup",
+				},				
 				filters: filter,
 				success: function (oData, oResponse) {
 					debugger;
-					var BatchPanel = here.getView().byId("BatchPanel");
+					oCreatePVModel.setData(oData.results[0]);
+					oController.getView().setModel(oCreatePVModel, "CreatePVModel");
+
+					var BatchItems = RemoveDuplicatesBy( oData.results[0].to_batch_items.results, "batch" );
+					// var BatchItems  = oData.results[0].to_batch_items.results;
+
+					var DefectCodes = oData.results[0].to_codegroup.results;
+
+					var BatchPanel = oController.getView().byId("BatchPanel");
 					var PanelItems = BatchPanel.getItems();	
 					
 					PanelItems[0].getContent()[2].setProperty("enabled", false); //Disable Delete Batch button on the first Batch Item
+
+					if( BatchItems.length > 1 ){
+						for ( var i=0; i < BatchItems.length; i++ ){
+							if( i == 0 ){
+								PanelItems[0].getContent()[0].getItems()[0].getItems()[1].setValue(BatchItems[i].batch );            //batch
+								PanelItems[0].getContent()[0].getItems()[1].getItems()[1].setValue(BatchItems[i].description );      //description
+								PanelItems[0].getContent()[0].getItems()[2].getItems()[1].setValue(BatchItems[i].colac_supply_qty);  //Qty COL or AC Supply  
+								PanelItems[0].getContent()[0].getItems()[3].getItems()[1].setValue(BatchItems[i].colac_used_qty);    //Qty COL or AC Used
+								PanelItems[0].getContent()[0].getItems()[4].getItems()[1].setValue(BatchItems[i].colac_num_qty);     //Qty COL or AC Numbers
+								PanelItems[0].getContent()[0].getItems()[5].getItems()[1].setValue(BatchItems[i].colac_scrap_qty);   //Qty COL or AC Scrap
+								PanelItems[0].getContent()[0].getItems()[6].getItems()[1].setValue(BatchItems[i].colac_waste_qty);   //Qty COL or AC Waste								
+							}else{
+								var newPanel = PanelItems[0].clone();
+
+								newPanel.getContent()[0].getItems()[0].getItems()[1].setValue(BatchItems[i].batch );            //batch
+								newPanel.getContent()[0].getItems()[1].getItems()[1].setValue(BatchItems[i].description );      //description
+								newPanel.getContent()[0].getItems()[2].getItems()[1].setValue(BatchItems[i].colac_supply_qty);  //Qty COL or AC Supply  
+								newPanel.getContent()[0].getItems()[3].getItems()[1].setValue(BatchItems[i].colac_used_qty);    //Qty COL or AC Used
+								newPanel.getContent()[0].getItems()[4].getItems()[1].setValue(BatchItems[i].colac_num_qty);     //Qty COL or AC Numbers
+								newPanel.getContent()[0].getItems()[5].getItems()[1].setValue(BatchItems[i].colac_scrap_qty);   //Qty COL or AC Scrap
+								newPanel.getContent()[0].getItems()[6].getItems()[1].setValue(BatchItems[i].colac_waste_qty);   //Qty COL or AC Waste	
+					
+								oController.getView().byId("BatchPanel").addItem(newPanel);								
+							}
+						}						
+					}else{
+						PanelItems[0].getContent()[0].getItems()[0].getItems()[1].setValue(BatchItems[0].batch );            //batch
+						PanelItems[0].getContent()[0].getItems()[1].getItems()[1].setValue(BatchItems[0].description );      //description
+						PanelItems[0].getContent()[0].getItems()[2].getItems()[1].setValue(BatchItems[0].colac_supply_qty);  //Qty COL or AC Supply  
+						PanelItems[0].getContent()[0].getItems()[3].getItems()[1].setValue(BatchItems[0].colac_used_qty);    //Qty COL or AC Used
+						PanelItems[0].getContent()[0].getItems()[4].getItems()[1].setValue(BatchItems[0].colac_num_qty);     //Qty COL or AC Numbers
+						PanelItems[0].getContent()[0].getItems()[5].getItems()[1].setValue(BatchItems[0].colac_scrap_qty);   //Qty COL or AC Scrap
+						PanelItems[0].getContent()[0].getItems()[6].getItems()[1].setValue(BatchItems[0].colac_waste_qty);   //Qty COL or AC Waste						
+					}	
 					
 					var TotalQtyCOLACSupply = 0;
 					var TotalQtyCOLACUsed = 0;
@@ -234,8 +220,10 @@ sap.ui.define([
 					var TotalScrapSFPF = 0;
 					var TotalWasteSFPF = 0;
 					var TotalScrapAC = 0;
-					var TotalWasteAC = 0;
-			
+					var TotalWasteAC = 0;					
+
+					var PanelItems = BatchPanel.getItems();	
+
 					for (var i=0; i < PanelItems.length; i++){
 						
 						var oFormContainers = BatchPanel.getItems()[i].getContent()[1].getContent()[0].getItems()[0].getFormContainers();
@@ -243,13 +231,13 @@ sap.ui.define([
 						var oItems = oForm.getFields()[0].getItems();
 					
 						//filter by batch
-						var CodeGroups = oData.results.filter(element => {
+						var CodeGroups = DefectCodes.filter(element => {
 										  return element.batch == PanelItems[i].getContent()[0].getItems()[0].getItems()[1].getValue();
 									});	
 						debugger;
 						
-						var ndx = 0;
-						var oFieldItems = PanelItems[i].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0].getFormElements()[0].getFields()[0].getItems();
+						// var ndx = 0;
+						// var oFieldItems = PanelItems[i].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0].getFormElements()[0].getFields()[0].getItems();
 						
 						var TotalQtyScrap = 0;
 						var TotalQtyWaste = 0;
@@ -285,9 +273,12 @@ sap.ui.define([
 										TotalQty += parseInt( CodeGroupItems[k].defect_qty );
 											
 										oItems[j].getItems()[1].getItems()[3].getItems()[1].setValue( CodeGroupItems[k].defect_qty );
-										
+
+										if( oItems[j].getItems()[1].getItems()[5] !== undefined ){
+											oItems[j].getItems()[1].getItems()[5].getItems()[1].setValue( CodeGroupItems[k].bautl );
+										}
+
 										default_defect = 'X';
-		
 										break;
 									}else{
 										continue;
@@ -324,8 +315,7 @@ sap.ui.define([
 						            oFieldLine.getItems()[1].getItems()[3].getItems()[1].setValue( CodeGroupItems[k].defect_qty );  //Qty
 						            oFieldLine.getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[k].shortext );    //Defect Type Description
 								    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[k].codedmg );     //Defect Code								
-	
-																		  
+								  
 	        						oItems.splice( TotalLines, 0, oFieldLine); 					
 								}
 								
@@ -386,7 +376,6 @@ sap.ui.define([
 			            TotalQtyCOLACUsed   += parseInt( PanelItems[i].getContent()[0].getItems()[3].getItems()[1].getValue() );
 					    TotalQtyCOLACNum    += parseInt( PanelItems[i].getContent()[0].getItems()[4].getItems()[1].getValue() );
 					}
-					
 					debugger;
 					
 		 			var TotalPercentScrap = 0;
@@ -416,15 +405,14 @@ sap.ui.define([
 		 			}		 			
 
 					oCreatePVModelTotalQty.setData(PVTotalQtyData);
-					oControllerUpdate.getView().setModel(oCreatePVModelTotalQty, "CreatePVTotalQtyModel");
+					oController.getView().setModel(oCreatePVModelTotalQty, "CreatePVTotalQtyModel");
 				},
 				//).bind(this),
 				error: function (oError) {
 					debugger;
 					//	alert("error");
 				}
-			});			
-	
+			});	
 		},
 
 		onValueHelpBatch: function (oEvent){
@@ -497,6 +485,62 @@ sap.ui.define([
 			this.getView().byId( this.lv_text ).setValue(e.Text);
 	
 			this._getDialogDefect().close();
+		},
+
+		onValueHelpComponent: function(oEvent){
+			debugger;
+			this.lv_sId = oEvent.getSource().getId();
+			this.lv_text = oEvent.getSource().getId().replace("DefectID", "DefectIDDesc");
+				
+			this._getDialogComponent().open();			
+		},
+
+		_getDialogComponent: function(){
+			if (!this.dialog_component) {  
+				this.dialog_component = sap.ui.xmlfragment("PP.ZManage_PV.view.Fragment.ComponentSh_Update", this);
+				this.getView().addDependent(this.dialog_component);
+				
+				debugger;
+			}else{
+				var oTable = sap.ui.getCore().byId("smartTable_Component_Update");
+				
+				if(oTable){
+					oTable.rebindTable(); //re-trigger onBeforeRebindTableComponent function
+				}				
+			}
+			return this.dialog_component;				
+		},
+
+		onSave_Component : function (oEvent) {
+			debugger;
+			var e = sap.ui.getCore().byId("table_Component_Update").getSelectedItem().getBindingContext().getObject();
+			
+			this.getView().byId( this.lv_sId ).setValue(e.Component);
+	
+			this._getDialogComponent().close();
+		},
+		
+		closeDialogComponent: function () {
+	
+			this._getDialogComponent().close();
+		},
+
+		onBeforeRebindTableComponent : function(oEvent){
+			debugger;
+
+			var oCreatePVModel = this.getView().getModel("CreatePVModel").getData();
+			var lv_ebeln =  oCreatePVModel.ebeln; 
+			var lv_ebelp =  oCreatePVModel.ebelp;	 
+			
+			var oFilter = new sap.ui.model.Filter({
+				filters: [
+					new sap.ui.model.Filter("PurchaseOrder", sap.ui.model.FilterOperator.EQ, lv_ebeln),
+					new sap.ui.model.Filter("PurchaseOrderItem", sap.ui.model.FilterOperator.EQ, lv_ebelp)
+				],
+				and: true
+			});		
+						
+			oEvent.getParameter("bindingParams").filters.push(oFilter);			
 		},
 
 		_onAddWaste: function (oEvent) {
@@ -819,7 +863,11 @@ sap.ui.define([
 				for ( let y=0; y < oFieldItems.length; y++ ){
 					var DefectCode = oFieldItems[y].getItems()[1].getItems()[1].getItems()[1].getValue();
 					var DefectQty  = oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue();
-					
+
+					if( oFieldItems[y].getItems()[1].getItems()[5] !== undefined ){
+						var Assembly   = oFieldItems[y].getItems()[1].getItems()[5].getItems()[1].getValue();
+					}
+
 					if(DefectCode && DefectQty){
 						var BatchID = PanelItems[i].getContent()[0].getItems()[0].getItems()[1].getValue();
 						
@@ -837,7 +885,8 @@ sap.ui.define([
 						                  codedmg: DefectCode,  //damage code
 							              codegrp: CodeGrp,    //Code Group
 							              fmgeig:  DefectQty,
-							              fmgfrd:  DefectQty });
+							              fmgfrd:  DefectQty,
+										  bautl: Assembly });
 					}
 				}
 			};
@@ -1038,6 +1087,11 @@ sap.ui.define([
 				// this.oFieldItems[i].getItems()[1].getItems()[2].getItems()[1].setValue('');
 				this.oFieldItems[i].getItems()[1].getItems()[3].getItems()[1].setValue('');
 				this.oFieldItems[i].getItems()[1].getItems()[4].getItems()[1].setValue('');
+
+				if( this.oFieldItems[i].getItems()[1].getItems()[5] !== undefined ){
+					this.oFieldItems[i].getItems()[1].getItems()[5].getItems()[1].setValue('');
+				}
+
 				oElements[0].getFields()[0].addItem(this.oFieldItems[i]);
 			}			
 			
@@ -1056,8 +1110,43 @@ sap.ui.define([
 			oRouters.navTo("DisplayPV", { Ebeln : lv_ebeln ,
 				                          Ebelp : lv_ebelp
 										}, true);
-		}
+		},
+		
+		onUploadComplete: function (e) {
+			this.getView().getModel().refresh()
+		},	
+		
+		onBeforeUploadStarts: function (e) {
+			debugger;
+			var t = new sap.m.UploadCollectionParameter({
+				name: "slug",
+				value: e.getParameter("fileName") + ";" + this.lv_qmnum
+			});
+			e.getParameters().addHeaderParameter(t);
+			var a = this.getView().getModel();
+			a.refreshSecurityToken();
+			var s = a.oHeaders;
+			var i = s["x-csrf-token"];
+			var r = new sap.m.UploadCollectionParameter({
+				name: "x-csrf-token",
+				value: i
+			});
+			e.getParameters().addHeaderParameter(r)
+		},		
 
+		onFileDeleted: function (oEvent) {
+			debugger;
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZPRJ_PV_SUBCONTRACTOR_SRV");
+			var File = oEvent.getParameter("item").getBindingContext().getPath();
+			oModel.remove(File, {
+				success: e => {
+					MessageToast.show("FileDeleted")
+				},
+				error: e => {}
+			});
+			MessageToast.show("FileDeleted");
+			this.getView().getModel().refresh()
+		}
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

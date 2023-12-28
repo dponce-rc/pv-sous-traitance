@@ -108,6 +108,8 @@ sap.ui.define([
 					var oForm = oFormContainers[0].getFormElements()[0];
 					var oItems = oForm.getFields()[0].getItems();
 					
+					if(oItems.length > 4 ){ return; };
+
 					var ndx = 0;
 					var oFieldItems = PanelItems[0].getContent()[1].getContent()[0].getItems()[0].getFormContainers()[0].getFormElements()[0].getFields()[0].getItems();
 					
@@ -145,12 +147,25 @@ sap.ui.define([
 							if(l === 0 ){
 								oItems[ndx].getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[l].code);		
 								oItems[ndx].getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[l].kurztext );
+								oItems[ndx].getItems()[1].getItems()[3].getItems()[1].setValue( '' );
+								oItems[ndx].getItems()[1].getItems()[4].getItems()[1].setValue( '' );
+
+								if( oItems[ndx].getItems()[1].getItems()[5] !== undefined ){
+									oItems[ndx].getItems()[1].getItems()[5].getItems()[1].setValue('');
+								}
+
 							}else{
 								var oFieldLine = oFieldItems[i].clone();
 								oFieldLine.getItems()[0].aCustomStyleClasses[0] = 'hidebutton'; 
 								
 					            oFieldLine.getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[l].kurztext );    //Defect Type Description
-							    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[l].code );     //Defect Code
+							    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[l].code );        //Defect Code
+					            oFieldLine.getItems()[1].getItems()[3].getItems()[1].setValue( '' );    
+							    oFieldLine.getItems()[1].getItems()[4].getItems()[1].setValue( '' ); 
+								
+								if( oFieldLine.getItems()[1].getItems()[5] !== undefined ){
+									oFieldLine.getItems()[1].getItems()[5].getItems()[1].setValue( '' );
+								}
 							    
 					            oItems.splice( ndx, 0, oFieldLine);								
 							}
@@ -283,6 +298,13 @@ sap.ui.define([
 			oElements[0].getFields()[0].removeAllItems();
 			
 			for(var i=0; i < this.oFieldItems.length; i++){
+				this.oFieldItems[i].getItems()[1].getItems()[3].getItems()[1].setValue( '' );    
+				this.oFieldItems[i].getItems()[1].getItems()[4].getItems()[1].setValue( '' ); 
+
+				if( this.oFieldItems[i].getItems()[1].getItems()[5] !== undefined ){
+					this.oFieldItems[i].getItems()[1].getItems()[5].getItems()[1].setValue( '' );
+				}
+
 				oElements[0].getFields()[0].addItem(this.oFieldItems[i]);
 			}			
 			
@@ -355,6 +377,10 @@ sap.ui.define([
 				for ( let y=0; y < oFieldItems.length; y++ ){
 					var DefectCode = oFieldItems[y].getItems()[1].getItems()[1].getItems()[1].getValue();
 					var DefectQty  = oFieldItems[y].getItems()[1].getItems()[3].getItems()[1].getValue();
+
+					if( oFieldItems[y].getItems()[1].getItems()[5] !== undefined ){
+						var Assembly   = oFieldItems[y].getItems()[1].getItems()[5].getItems()[1].getValue();
+					}
 					
 					if(DefectCode && DefectQty){
 						var BatchID = PanelItems[i].getContent()[0].getItems()[0].getItems()[1].getValue();
@@ -373,10 +399,17 @@ sap.ui.define([
 						                  codedmg: DefectCode,  //damage code
 							              codegrp: CodeGrp,    //Code Group
 							              fmgeig:  DefectQty,
-							              fmgfrd:  DefectQty });
+							              fmgfrd:  DefectQty,
+										  bautl:   Assembly });
 					}
 				}
 			};
+
+			if( BatchItems.length === 0 || CodeGroups.length === 0 ){
+				var msg = this.getView().getModel("i18n").getResourceBundle().getText("Notif_NoBatchCode");
+				MessageToast.show(msg);
+				return;
+			}
 			
 			var C = new JSONModel({
 				action:   "C",
@@ -419,7 +452,10 @@ sap.ui.define([
 						var msg = "Error";
 						MessageToast.show(msg);
 					}
-					
+
+					var oRouters = sap.ui.core.UIComponent.getRouterFor(here);
+					oRouters.navTo("RouteView1", {}, true);
+
 					// MessageToast.show(t.data.Message);
 					// var text = "ordre a été sauvegardé avec le numéro"
 					// if (t.data.Message.includes(text)) {
@@ -579,13 +615,13 @@ sap.ui.define([
 			debugger;
 
 			var oCreatePVModel = this.getView().getModel("CreatePVModel").getData();
-			var lv_ebeln =  oCreatePVModel.ebeln;
-			var lv_ebelp =  oCreatePVModel.ebelp;	
+			var lv_ebeln =  oCreatePVModel.ebeln; 
+			var lv_ebelp =  oCreatePVModel.ebelp;	 
 			
 			var oFilter = new sap.ui.model.Filter({
 				filters: [
-					new sap.ui.model.Filter("PurchaseOrder", sap.ui.model.FilterOperator.EQ, this.lv_ebeln),
-					new sap.ui.model.Filter("PurchaseOrderItem", sap.ui.model.FilterOperator.EQ, this.lv_ebelp)
+					new sap.ui.model.Filter("PurchaseOrder", sap.ui.model.FilterOperator.EQ, lv_ebeln),
+					new sap.ui.model.Filter("PurchaseOrderItem", sap.ui.model.FilterOperator.EQ, lv_ebelp)
 				],
 				and: true
 			});		
