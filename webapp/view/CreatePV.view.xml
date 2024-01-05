@@ -346,7 +346,7 @@
 				</f:SimpleForm>
 				<Toolbar>
 					<ToolbarSpacer/>
-					<Button icon="sap-icon://save" type="Accept" text="{i18n>butt_save}" press="._onSaveData" width="15rem"/>
+					<Button icon="sap-icon://save" type="Accept" text="{i18n>butt_save_create}" press="._onSaveData" width="15rem"/>
 					<!--<Button text="{i18n>Submit}" press=".onDisplayData"/>-->
 					<!--<Button text="{i18n>Delete}" press=".onFilterData"/>-->
 					<!--<Button text="{i18n>Back}" press=".onFilterData"/>-->

@@ -288,7 +288,7 @@
 				</f:SimpleForm>
 				<Toolbar>
 					<ToolbarSpacer/>
-					<Button icon="sap-icon://save" type="Accept" text="{i18n>butt_save}" press="._onSaveData" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
+					<Button icon="sap-icon://save" type="Accept" text="{i18n>butt_save_update}" press="._onSaveData" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
 					<Button icon="sap-icon://approvals" type="Accept" text="{i18n>butt_submit}" press="._onSaveData" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
 					<Button icon="sap-icon://delete" type="Accept" text="{i18n>butt_delete}" press="._onSaveData" enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }"/>
 					<!--<Button text="{i18n>Back}" press=".onFilterData"/>-->
@@ -529,7 +529,7 @@
 						                        					   		</VBox>
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
 								                        				       <Label text="Component" /> 
-								                        				       <Input width="7rem" id="Z0000003_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent" /> 						                        					   			
+								                        				       <Input width="7rem" id="Z0000003_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
 						                        					   		</VBox>																			
 						                        				       </HBox>
 								                        			</HBox>	
@@ -562,7 +562,7 @@
 						                        					   		</VBox>
 						                        					   		<VBox class="sapUiTinyMarginTop sapUiLargeMarginBegin sapUiLargeMarginBegin">
 								                        				       <Label text="Component" /> 
-								                        				       <Input width="7rem" id="Z0000004_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent" /> 						                        					   			
+								                        				       <Input width="7rem" id="Z0000004_Component" showValueHelp="true" valueHelpRequest=".onValueHelpComponent" editable="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" /> 						                        					   			
 						                        					   		</VBox>																				
 						                        				       </HBox>
 								                        			</HBox>								                        			
@@ -588,7 +588,8 @@
 									showExceededText="true" 
 									maxLength="100" width="100%" 
 									valueState="{= ${/value}.length > 40 ? 'Warning' : 'None' }" 
-									valueLiveUpdate="false" liveChange="handleLiveChange" />							
+									valueLiveUpdate="false" liveChange="handleLiveChange" 
+									enabled="{= ${CreatePVModel>/no_edit} !== 'NO_EDIT' }" />							
 							</Panel>
 							
 							<UploadCollection maximumFilenameLength="55" maximumFileSize="1000" fileDeleted="onFileDeleted" class="sapUiResponsiveMargin"
