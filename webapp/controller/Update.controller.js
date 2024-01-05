@@ -556,16 +556,35 @@ sap.ui.define([
            	 }
            }
 
+		   if( Id.includes("Z0000001") ){
+			  var sId = "Z0000001";
+		   }else if ( Id.includes("Z0000002") ){
+			  var sId = "Z0000002";
+		   }else if( Id.includes("Z0000003") ){
+			  var sId = "Z0000003";
+		   }else if ( Id.includes("Z0000004") ){
+			  var sId = "Z0000004";
+		   }
+
 		   var DefectCodes = oForm.getFields()[0].getItems().filter( element => {
-																	  return element.sId.includes( Id ) } );
-																	  
+																	//   return element.sId.includes( Id ) } );
+																	return element.sId.includes( sId ) } );
+
            var oFieldItemsCopy = oForm.getFields()[0].getItems()[ndx].clone();
            
            oFieldItemsCopy.getItems()[0].aCustomStyleClasses[0] = 'hidebutton'; //hide button - css style maintain div space
-           
+		   
            oFieldItemsCopy.getItems()[1].getItems()[3].getItems()[1].setValue(''); //Qty
            oFieldItemsCopy.getItems()[1].getItems()[2].getItems()[1].setValue(''); //Defect Type Description
 		   oFieldItemsCopy.getItems()[1].getItems()[1].getItems()[1].setValue(''); //Defect Code
+
+		   if( oFieldItemsCopy.getItems()[1].getItems()[5] !== undefined ){
+			  oFieldItemsCopy.getItems()[1].getItems()[5].getItems()[1].setValue( '' );
+		   }
+
+		   if( oFieldItemsCopy.getItems()[1].getItems()[6] !== undefined ){
+			  oFieldItemsCopy.getItems()[1].getItems()[6].getItems()[1].setValue( '' );
+		   }
 
            var oItems = oForm.getFields()[0].getItems();
            //oItems.splice( ndx + 1, 0, oFieldItemsCopy);
@@ -1031,10 +1050,20 @@ sap.ui.define([
 			
 			for(var i=0; i < this.oFieldItems.length; i++){
 				var oFieldItem = this.oFieldItems[i].clone();     //need to clone again for the new sId
-				oFieldItem.getItems()[1].getItems()[1].getItems()[1].setValue('');
-				oFieldItem.getItems()[1].getItems()[2].getItems()[1].setValue('');
-				oFieldItem.getItems()[1].getItems()[3].getItems()[1].setValue('');
-				oFieldItem.getItems()[1].getItems()[4].getItems()[1].setValue('');
+				// oFieldItem.getItems()[1].getItems()[1].getItems()[1].setValue('');
+				// oFieldItem.getItems()[1].getItems()[2].getItems()[1].setValue('');
+
+				oFieldItem.getItems()[1].getItems()[3].getItems()[1].setValue(''); //clear quantity
+				oFieldItem.getItems()[1].getItems()[4].getItems()[1].setValue(''); //clear percentage
+
+				if( oFieldItem.getItems()[1].getItems()[5] !== undefined ){
+					oFieldItem.getItems()[1].getItems()[5].getItems()[1].setValue( '' );
+				}
+
+				if( oFieldItem.getItems()[1].getItems()[6] !== undefined ){
+					oFieldItem.getItems()[1].getItems()[6].getItems()[1].setValue( '' );
+				}
+
 				oElements[0].getFields()[0].addItem(oFieldItem);
 			}			
 			

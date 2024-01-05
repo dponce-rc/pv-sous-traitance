@@ -199,13 +199,24 @@ sap.ui.define([
            
            for ( let x=0; x < oForm.getFields()[0].getItems().length; x++ ){
            	 if( oForm.getFields()[0].getItems()[x].getItems()[0].getId().includes( Id ) ){
-           	 	var ndx = x;
+           	 	var ndx = x;				
            	 	break;
            	 }
            }
+		   
+		   if( Id.includes("Z0000001") ){
+				var sId = "Z0000001";
+			}else if ( Id.includes("Z0000002") ){
+				var sId = "Z0000002";
+			}else if( Id.includes("Z0000003") ){
+				var sId = "Z0000003";
+			}else if ( Id.includes("Z0000004") ){
+				var sId = "Z0000004";
+			}
 							
 		   var DefectCodes = oForm.getFields()[0].getItems().filter( element => {
-																	  return element.sId.includes( Id ) } );
+																	//   return element.sId.includes( Id ) } );
+																	  return element.sId.includes( sId ) } );
 			
            var oFieldItemsCopy = oForm.getFields()[0].getItems()[ndx].clone();
            
@@ -252,6 +263,18 @@ sap.ui.define([
 			
 			for(var i=0; i < this.oFieldItems.length; i++){
 				var oFieldItem = this.oFieldItems[i].clone();     //need to clone again for the new sId
+
+				oFieldItem.getItems()[1].getItems()[3].getItems()[1].setValue(''); //clear qty
+				oFieldItem.getItems()[1].getItems()[4].getItems()[1].setValue(''); // clear percentage
+
+				if( oFieldItem.getItems()[1].getItems()[5] !== undefined ){
+					oFieldItem.getItems()[1].getItems()[5].getItems()[1].setValue( '' );
+				}
+
+				if( oFieldItem.getItems()[1].getItems()[6] !== undefined ){
+					oFieldItem.getItems()[1].getItems()[6].getItems()[1].setValue( '' );
+				}				
+
 				oElements[0].getFields()[0].addItem(oFieldItem);
 			}			
 			
