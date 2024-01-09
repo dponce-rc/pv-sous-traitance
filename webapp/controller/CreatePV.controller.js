@@ -430,7 +430,7 @@ sap.ui.define([
 
 			if( BatchItems.length === 0 || CodeGroups.length === 0 ){
 				var msg = this.getView().getModel("i18n").getResourceBundle().getText("Notif_NoBatchCode");
-				MessageToast.show(msg);
+				MessageToast.show(msg, { duration: 8000 } );
 				return;
 			}
 			

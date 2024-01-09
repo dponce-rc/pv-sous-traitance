@@ -236,7 +236,7 @@
 											<l:GridData span="L2 M2 S2"/>
 										</layoutData>
 									</Label>
-									<Input value="{CreatePVModel>/submtd_text}" editable="false"  >
+									<Input value="{CreatePVModel>/pv_status}" editable="false"  >
 										<layoutData>
 											<l:GridData span="L1 M2 S2"/>
 										</layoutData>

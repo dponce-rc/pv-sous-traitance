@@ -994,10 +994,14 @@ sap.ui.define([
 					oElements[0].getFields()[0].removeAllItems();
 					
 					for(var i=0; i < here.oFieldItems.length; i++){
-						here.oFieldItems[i].getItems()[1].getItems()[1].getItems()[1].setValue('');
-						here.oFieldItems[i].getItems()[1].getItems()[2].getItems()[1].setValue('');
+
 						here.oFieldItems[i].getItems()[1].getItems()[3].getItems()[1].setValue('');
 						here.oFieldItems[i].getItems()[1].getItems()[4].getItems()[1].setValue('');
+
+						if( here.oFieldItems[i].getItems()[1].getItems()[5] !== undefined ){
+							here.oFieldItems[i].getItems()[1].getItems()[5].getItems()[1].setValue( '' );
+						}
+
 						oElements[0].getFields()[0].addItem(here.oFieldItems[i]);
 					}			
 					
