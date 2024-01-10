@@ -315,7 +315,11 @@ sap.ui.define([
 						            oFieldLine.getItems()[1].getItems()[3].getItems()[1].setValue( CodeGroupItems[k].defect_qty );  //Qty
 						            oFieldLine.getItems()[1].getItems()[2].getItems()[1].setValue( CodeGroupItems[k].shortext );    //Defect Type Description
 								    oFieldLine.getItems()[1].getItems()[1].getItems()[1].setValue( CodeGroupItems[k].codedmg );     //Defect Code								
-								  
+
+									if( oFieldLine.getItems()[1].getItems()[5] !== undefined ){
+										oFieldLine.getItems()[1].getItems()[5].getItems()[1].setValue( CodeGroupItems[k].bautl );   //Component
+									}
+									
 	        						oItems.splice( TotalLines, 0, oFieldLine); 					
 								}
 								
@@ -863,6 +867,16 @@ sap.ui.define([
 						var TotalQtyWaste = oContentItems[l].getItems()[1].getValue();
 					}
 				}
+
+				if( QtyCOLACSupply =='' ){ QtyCOLACSupply = 0; }
+
+				if( QtyCOLACUsed =='' ){ QtyCOLACUsed = 0; }
+
+				if( TotalQtyScrap =='' ){ TotalQtyScrap = 0; }
+
+				if( QtyCOLACNum =='' ){ QtyCOLACNum = 0;}
+
+				if( TotalQtyWaste =='' ){ TotalQtyWaste = 0;}				
 				
 				BatchItems.push({ batch: BatchID,
 				                  ebeln: oCreatePVModel.ebeln,

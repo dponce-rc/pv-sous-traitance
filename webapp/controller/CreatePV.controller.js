@@ -381,7 +381,18 @@ sap.ui.define([
 						var TotalQtyWaste = oContentItems[l].getItems()[1].getValue();
 					}
 				}
-				
+
+				if( QtyCOLACSupply =='' ){ QtyCOLACSupply = 0; }
+
+				if( QtyCOLACUsed =='' ){ QtyCOLACUsed = 0; }
+
+				if( TotalQtyScrap =='' ){ TotalQtyScrap = 0; }
+
+				if( QtyCOLACNum =='' ){ QtyCOLACNum = 0;}
+
+				if( TotalQtyWaste =='' ){ TotalQtyWaste = 0;}
+
+
 				BatchItems.push({ batch: BatchID,
 				                  ebeln: oCreatePVModel.ebeln,
 					              ebelp: oCreatePVModel.ebelp,
