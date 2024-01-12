@@ -7,7 +7,7 @@
         "applicationVersion": {
             "version": "1.0.0"
         },
-        "title": "{{appTitle}}",
+        "title": "Manage PV",
         "description": "{{appDescription}}",
         "sourceTemplate": {
             "id": "servicecatalog.connectivityComponentForManifest",

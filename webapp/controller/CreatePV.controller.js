@@ -441,7 +441,7 @@ sap.ui.define([
 
 			if( BatchItems.length === 0 || CodeGroups.length === 0 ){
 				var msg = this.getView().getModel("i18n").getResourceBundle().getText("Notif_NoBatchCode");
-				MessageToast.show(msg, { duration: 8000 } );
+				MessageToast.show(msg, { duration: 80000 } );
 				return;
 			}
 			
@@ -481,10 +481,11 @@ sap.ui.define([
 					
 					if(e.qmnum){
 						var msg = "Notification "  + e.qmnum + " has been created";
-						MessageToast.show(msg);
+						MessageToast.show(msg, { duration: 80000 } );
+	
 					}else {
 						var msg = "Error";
-						MessageToast.show(msg);
+						MessageToast.show(msg, { duration: 80000 });
 					}
 
 					var oRouters = sap.ui.core.UIComponent.getRouterFor(here);

@@ -26,7 +26,7 @@ server:
           - path: /sap
             url: ""
             client: "201"
-            destination: RC_DEV_DFO_CLT_201
+            destination: FIORI_DFO_301
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
